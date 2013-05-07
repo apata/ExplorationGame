@@ -3,7 +3,7 @@ package explorationgame;
 import javax.swing.JTextArea;
 
 @SuppressWarnings("serial")
-public class StatusTextArea extends JTextArea implements UpdateListener {
+public class StatusTextArea extends JTextArea implements ActorStatusListener {
 	public StatusTextArea() {
 		super();
 		this.setEditable(false);
@@ -17,6 +17,19 @@ public class StatusTextArea extends JTextArea implements UpdateListener {
 	@Override
 	public void statusUpdated(int[] status) {
 		append("Your status has changed!\n");
+		
+	}
+
+	@Override
+	public void actorAtTile(Tile tile) {
+		int thirst_increase = tile.terrain.thirst / tile.visited;
+		int hunger_increase = tile.terrain.hunger / tile.visited;
+		int wounds_increase = tile.terrain.wounds / tile.visited;
+		
+		append("Hunger increased by " + hunger_increase + 
+				"; thirst increased by " + thirst_increase + 
+				"; wounds increased by " + wounds_increase + ".\n");
+		// TODO Auto-generated method stub
 		
 	}
 

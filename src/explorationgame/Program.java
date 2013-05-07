@@ -15,7 +15,7 @@ import javax.swing.JFrame;
  * 
  *
  */
-public class Game {
+public class Program {
 
 	/**
 	 * Creates main menu.

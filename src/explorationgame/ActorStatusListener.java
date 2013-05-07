@@ -1,5 +1,6 @@
 package explorationgame;
 
-interface UpdateListener {
+interface ActorStatusListener {
 	void statusUpdated(int[] status);
+	void actorAtTile(Tile tile);
 }

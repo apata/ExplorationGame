@@ -9,18 +9,18 @@ import javax.swing.JLabel;
  *
  */
 @SuppressWarnings("serial")
-public class StatusLabel extends JLabel implements UpdateListener {
+public class StatusLabel extends JLabel implements ActorStatusListener {
 	int[] max_values;
 	String actor_name;
 	
-	public StatusLabel(Actor actor) {
+	public StatusLabel(Player actor) {
 		int[] temp = {actor.maxHunger, actor.maxThirst, actor.maxWounds};
 		max_values = temp;
-		actor_name = actor.name;
+		actor_name = actor.getName();
 		this.setText(actor_name + " status ::: Hunger = " + actor.getHunger() + " (max: " + max_values[0] + 
 				") | Thirst = " + actor.getThirst() + " (max: " + max_values[1] + 
 				") | Wounds = " + actor.getWounds() + " (max: " + max_values[2] + 
-				") | Total moves = " + actor.moves);
+				") | Total moves = " + actor.getMoves());
 	}
 	
 	@Override
@@ -30,6 +30,12 @@ public class StatusLabel extends JLabel implements UpdateListener {
 				") | Wounds = " + status[2] + " (max: " + max_values[2] + 
 				") | Total moves = " + status[3]);
 		this.repaint();
+	}
+
+	@Override
+	public void actorAtTile(Tile tile) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

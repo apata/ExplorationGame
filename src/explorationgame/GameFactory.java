@@ -29,15 +29,14 @@ public class GameFactory {
 	public JFrame createGame(String actorName, String terrainFileName, int tg_w, int tg_h, int tg_cw) {
 		Terrain[] terrain_array = ReadTerrainsXML.make_terrains(ReadTerrainsXML.parse_xml(terrainFileName));
 		TerrainServer ts = new TerrainServer(terrain_array);
-
-		Actor player = new Actor(actorName);
 		
 		TileGrid tg = new TileGrid(tg_w, tg_h, tg_cw, ts);
-	    		
+		Player player = new Player(tg, actorName);
+		
 		tg.placeActor(player);
 		
-	    StatusLabel statusLabel = new StatusLabel(tg.actor);
-	    tg.actor.addListener(statusLabel);  
+	    StatusLabel statusLabel = new StatusLabel(tg.player);
+	    tg.player.addStatusListener(statusLabel);  
 	    
 	    // --- Creates game window. ---
 		JFrame gameFrame = new JFrame("Game");
@@ -72,7 +71,7 @@ public class GameFactory {
 	    
 	    // Creates status text area.
 	    StatusTextArea statusTextArea = new StatusTextArea();
-	    tg.actor.addListener(statusTextArea);
+	    tg.player.addStatusListener(statusTextArea);
 	    statusTextArea.append("");
 	    
 	    JScrollPane statusTextPane = new JScrollPane(statusTextArea);
@@ -95,9 +94,7 @@ public class GameFactory {
 		statusLabelConstraints.weightx = 1;
 		statusLabelConstraints.weighty = 0.05;
 		statusLabelConstraints.fill = GridBagConstraints.BOTH;
-
-
-	    
+		
 	    gameFrame.getContentPane().add(gameScrollPane, gameScrollPaneConstraints);
 	    gameFrame.getContentPane().add(statusTextPane, statusTextPaneConstraints);
 	    gameFrame.getContentPane().add(statusLabel, statusLabelConstraints);
@@ -109,7 +106,7 @@ public class GameFactory {
 	    gameFrame.setLocationByPlatform(true);
 	    gameFrame.setVisible(true);
 	    
-	    tg.moveView(tg.getActorTile());
+	    tg.moveView(tg.player.getCurrentTile());
 		
 	    return gameFrame;
 	}

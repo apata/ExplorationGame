@@ -28,7 +28,7 @@ class TileGrid extends JPanel {
 	/**
 	 * Currently, only one Actor can be attached to the TileGrid - the player.
 	 */
-	Actor actor;
+	Player player;
 	
 	/**
 	 * Defines custom KeyEventDispatcher and relevant KeyEvents and their actions.
@@ -40,8 +40,8 @@ class TileGrid extends JPanel {
 		
 		@Override
 		public boolean dispatchKeyEvent(KeyEvent e) {
-			int row = actor.getRow();
-			int col = actor.getCol();
+			int row = player.getRow();
+			int col = player.getCol();
 			
 			if (e.getID() == KeyEvent.KEY_RELEASED) {
                 System.out.print("Released: ");
@@ -120,9 +120,9 @@ class TileGrid extends JPanel {
 	 * 
 	 * @return
 	 */
-	public Tile getActorTile() {
-		return tiles[actor.getRow()][actor.getCol()];
-	}
+//	public Tile getActorTile() {
+//		return tiles[player.getRow()][player.getCol()];
+//	}
 	
 	
 	/**
@@ -133,19 +133,20 @@ class TileGrid extends JPanel {
 	 * 
 	 * @param act
 	 */
-	public void placeActor(Actor act) {
-		this.actor = act;
-		if (actor.getRow() == -1 && actor.getCol() == -1) {
+	public void placeActor(Player act) {
+		this.player = act;
+		if (player.getRow() == -1 && player.getCol() == -1) {
 			int startRow = (int) (Math.random() * tiles.length);
 			int startCol = (int) (Math.random() * tiles[startRow].length);
 			
-			actor.setLoc(startRow, startCol);
-			actor.visitTile(tiles[startRow][startCol]);
+			player.setLocation(startRow, startCol);
+			player.doTurn();
 		} else {
-			actor.setLoc(actor.getRow(), actor.getCol());
-			actor.visitTile(getActorTile());
+			player.setLocation(player.getRow(), player.getCol());
+			player.doTurn();
+			
 		}
-		getActorTile().setIcon(actor.icon);
+		player.getCurrentTile().setIcon(player.icon);
 	}
 	
 	/**
@@ -172,13 +173,10 @@ class TileGrid extends JPanel {
 	 * @param tile
 	 */
 	public void moveActor(Tile tile) {
-		getActorTile().setIcon(null);
-		actor.setLoc(tile.row, tile.col);
-		actor.visitTile(tile);
-		getActorTile().setIcon(actor.icon);
+		player.move(tile.row, tile.col);
 		moveView(tile);
 		
-		if (actor.checkDeath()) {
+		if (player.checkDeath()) {
 			KeyboardFocusManager manager = KeyboardFocusManager.getCurrentKeyboardFocusManager();
 			manager.removeKeyEventDispatcher(keyEventDispatcher);
 			
@@ -209,8 +207,8 @@ class TileGrid extends JPanel {
 	 * actor's current tile.
 	 */
 	public void tilePressed(Tile tile) {
-		int ar = actor.getRow();
-		int ac = actor.getCol();
+		int ar = player.getRow();
+		int ac = player.getCol();
 		
 		boolean nextToActorRow = tile.row == ar || tile.row == ar - 1 || tile.row == ar + 1;
 		boolean nextToActorCol = tile.col == ac || tile.col == ac - 1 || tile.col == ac + 1;

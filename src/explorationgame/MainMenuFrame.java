@@ -10,7 +10,7 @@ import javax.swing.*;
  *
  */
 @SuppressWarnings("serial")
-public class MainMenuFrame extends JPanel implements UpdateListener {
+public class MainMenuFrame extends JPanel {
 	public final Dimension menu_window_default_dimension = new Dimension(600, 200);
 	public final String terrain_file_name = "resources\\terrains.xml";
 	
@@ -54,15 +54,15 @@ public class MainMenuFrame extends JPanel implements UpdateListener {
 	 * main menu frame. So far unsuccessful.
 	 * @see explorationgame.UpdateListener#statusUpdated(int[])
 	 */
-	@Override
-	public void statusUpdated(int[] status) {
-		Actor dummyActor = new Actor();
-		dummyActor.setHunger(status[0]);
-		dummyActor.setThirst(status[1]);
-		dummyActor.setWounds(status[2]);
-		
-		if (dummyActor.checkDeath()) {
-			this.getTopLevelAncestor().setVisible(true);
-		}
-	}
+//	@Override
+//	public void statusUpdated(int[] status) {
+//		Player dummyActor = new Player();
+//		dummyActor.setHunger(status[0]);
+//		dummyActor.setThirst(status[1]);
+//		dummyActor.setWounds(status[2]);
+//		
+//		if (dummyActor.checkDeath()) {
+//			this.getTopLevelAncestor().setVisible(true);
+//		}
+//	}
 }
