@@ -21,13 +21,13 @@ class Tile extends JLabel {
 		terrain = t;
 		setOpaque(true);
 		setFocusable(true);
-		setBackground(terrain.color);
+		setBackground(terrain.getColor());
 		setHorizontalAlignment(JLabel.CENTER);
 		setVerticalAlignment(JLabel.CENTER);
 		setBorder(BorderFactory.createEmptyBorder());
-		setToolTipText("<html><u><b>" + terrain.name + "</u></b>" +
-						"<br><b>Hunger: </b>" + terrain.hunger +
-						"<br><b>Thirst: </b>" + terrain.thirst +
-						"<br><b>Wounds: </b>" + terrain.wounds);
+		setToolTipText("<html><u><b>" + terrain.getName() + "</u></b>" +
+						"<br><b>Hunger: </b>" + terrain.getHunger() +
+						"<br><b>Thirst: </b>" + terrain.getThirst() +
+						"<br><b>Wounds: </b>" + terrain.getWounds());
 		}
 }

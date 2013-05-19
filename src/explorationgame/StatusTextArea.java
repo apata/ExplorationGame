@@ -22,9 +22,9 @@ public class StatusTextArea extends JTextArea implements ActorStatusListener {
 
 	@Override
 	public void actorAtTile(Tile tile) {
-		int thirst_increase = tile.terrain.thirst / tile.visited;
-		int hunger_increase = tile.terrain.hunger / tile.visited;
-		int wounds_increase = tile.terrain.wounds / tile.visited;
+		int thirst_increase = tile.terrain.getThirst() / tile.visited;
+		int hunger_increase = tile.terrain.getHunger() / tile.visited;
+		int wounds_increase = tile.terrain.getWounds() / tile.visited;
 		
 		append("Hunger increased by " + hunger_increase + 
 				"; thirst increased by " + thirst_increase + 

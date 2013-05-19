@@ -22,7 +22,7 @@ public class GridMouseListener extends MouseAdapter {
 	public void mousePressed(MouseEvent e) {
 		if (e.getButton() == MouseEvent.BUTTON1 && enabled) {
 			Tile sourceTile = (Tile) e.getSource();
-			System.out.print("Pressed " + sourceTile.terrain.name + " at " + sourceTile.row + ", " + sourceTile.col + ". ");
+			System.out.print("Pressed " + sourceTile.terrain.getName() + " at " + sourceTile.row + ", " + sourceTile.col + ". ");
 			actor.move(sourceTile);
 			}
 		}

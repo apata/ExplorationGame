@@ -27,7 +27,8 @@ public class GameFactory {
 	 * @return
 	 */
 	public JFrame createGame(String actorName, String terrainFileName, int tg_w, int tg_h, int tg_cw) {
-		Terrain[] terrain_array = ReadTerrainsXML.make_terrains(ReadTerrainsXML.parse_xml(terrainFileName));
+		//Terrain[] terrain_array = ReadTerrainsXML.make_terrains(ReadTerrainsXML.parse_xml(terrainFileName));
+		Terrain[] terrain_array = ReadTerrains.make_terrains();
 		TerrainServer ts = new TerrainServer(terrain_array);
 		
 		TileGrid gameWorld = new TileGrid(tg_w, tg_h, tg_cw, ts);

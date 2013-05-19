@@ -4,13 +4,13 @@ import java.awt.Color;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 
-
 /**
  * Represents player of game.
  * 
  * @author Artur
  *
  */
+
 class Player extends Actor {
 	private int hunger;
 	private int thirst;
@@ -123,9 +123,9 @@ class Player extends Actor {
 		curTile.visited += 1;
 		curTile.setBorder(BorderFactory.createLineBorder(new Color(150, 0, 0, 255), 2 * curTile.visited));
 
-		int thirst_increase = curTile.terrain.thirst / curTile.visited;
-		int hunger_increase = curTile.terrain.hunger / curTile.visited;
-		int wounds_increase = curTile.terrain.wounds / curTile.visited;
+		int thirst_increase = curTile.terrain.getThirst() / curTile.visited;
+		int hunger_increase = curTile.terrain.getHunger() / curTile.visited;
+		int wounds_increase = curTile.terrain.getWounds() / curTile.visited;
 
 		// System.out.println("H: " + hunger_increase + "; T: " + thirst_increase + "; W: " + wounds_increase);
 

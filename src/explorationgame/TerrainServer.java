@@ -16,7 +16,7 @@ class TerrainServer {
 	public TerrainServer(Terrain[] terrain_array) {
 		for (Terrain terrain : terrain_array) {
 			terrain_list.add(terrain);
-			total_weight += terrain.weight;
+			total_weight += terrain.getWeight();
 			terrain_weights.add(total_weight);
 		}
 	}
