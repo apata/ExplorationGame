@@ -2,9 +2,6 @@ package explorationgame;
 
 import java.awt.Color;
 
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-
 /**
  * Reads different terrain types and puts them into an array.
  * 
@@ -19,7 +16,6 @@ class ReadTerrains {
 		Terrain[] tbd = new Terrain[terrain_count];
 		tbd[0] = new Forest();
 		tbd[1] = new Plains();
-
 		return tbd;
 	}
 }

@@ -11,31 +11,59 @@ import java.awt.Color;
  */
 abstract class Terrain {
 	private String name;
+	private Color color;
+	private int weight;
+	private int hunger;
+	private int thirst;
+	private int wounds;
 
-
-//	public Terrain(String name, Color color, int weight, int hunger,
-//			int thirst, int wounds) {
-//		super();
-//		this.name = name;
-//		this.color = color;
-//		this.weight = weight;
-//		this.hunger = hunger;
-//		this.thirst = thirst;
-//		this.wounds = wounds;
-//	}
-
-
-	abstract String getName();
+	public String getName() {
+		return name;
+	}
 	
-	abstract Color getColor();
+	public void setName(String name) {
+		this.name = name;
+	}
 	
-	abstract int getWeight();
+	public Color getColor() {
+		return color;
+	}
 	
-	abstract int getHunger();
+	public void setColor(Color color) {
+		this.color = color;
+	}
 	
-	abstract int getThirst();
+	public int getWeight() {
+		return weight;
+	}
 	
-	abstract int getWounds();
+	public void setWeight(int weight) {
+		this.weight = weight;
+	}
+	
+	public int getHunger() {
+		return hunger;
+	}
+	
+	public void setHunger(int hunger) {
+		this.hunger = hunger;
+	}
+	
+	public int getThirst() {
+		return thirst;
+	}
+	
+	public void setThirst(int thirst) {
+		this.thirst = thirst;
+	}
+	
+	public int getWounds() {
+		return wounds;
+	}
+	
+	public void setWounds(int wounds) {
+		this.wounds = wounds;
+	}
 	
 	@Override
 	public String toString() {

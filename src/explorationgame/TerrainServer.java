@@ -20,7 +20,7 @@ class TerrainServer {
 			terrain_weights.add(total_weight);
 		}
 	}
-	
+
 	
 	/**
 	 * Serves random weighed Terrain.
