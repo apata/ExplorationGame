@@ -15,16 +15,15 @@ class Player extends Actor {
 	private int hunger;
 	private int thirst;
 	private int wounds;
+	
+	private int turnMoves;
 			
 	final int maxHunger = 50;
 	final int maxThirst = 50;
 	final int maxWounds = 15;
+	final int maxTurnMoves = 4;
 	
 	ImageIcon icon;
-	
-	GridDispatcher gridDispatcher;
-	GridMouseListener gridMouseListener;
-
 	
 	int getHunger() {
 		return hunger;
@@ -50,11 +49,11 @@ class Player extends Actor {
 		this.wounds = wounds;
 	}
 		
-	public Player(TileGrid tileGrid) {
+	public Player() {
 		hunger = 0;
 		thirst = 0;
 		wounds = 0;
-		setTileGrid(tileGrid);
+		setPlayerControlled(true);
 		
 		setMoves(0);
 		icon = new ImageIcon("resources\\actor_icon.png");
@@ -63,19 +62,19 @@ class Player extends Actor {
 		setCol(-1);
 	}
 	
-	public Player(TileGrid tileGrid, String name) {
-		this(tileGrid);
+	public Player(String name) {
+		this();
 		setName(name);
 	}
 	
-	public Player(TileGrid tileGrid, String name, ImageIcon icon) {
-		this(tileGrid);
+	public Player(String name, ImageIcon icon) {
+		this();
 		setName(name);
 		this.icon = icon;
 	}
 	
-	public Player(TileGrid tileGrid, String name, String iconLocation) {
-		this(tileGrid);
+	public Player(String name, String iconLocation) {
+		this();
 		setName(name);
 		this.icon = new ImageIcon(iconLocation);
 	}
@@ -97,6 +96,15 @@ class Player extends Actor {
 			return false;
 		}
 	}
+	
+	public boolean checkTurnEnd() {
+		if (turnMoves <= 0) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
 		
 	/**
 	 * Invoked in moveActor(). Makes changes to actor values according to Terrain of input Tile.
@@ -118,51 +126,113 @@ class Player extends Actor {
 	}
 
 	@Override
-	void doTurn() {
-		Tile curTile = getCurrentTile();
-		curTile.visited += 1;
-		curTile.setBorder(BorderFactory.createLineBorder(new Color(150, 0, 0, 255), 2 * curTile.visited));
-
-		int thirst_increase = curTile.terrain.getThirst() / curTile.visited;
-		int hunger_increase = curTile.terrain.getHunger() / curTile.visited;
-		int wounds_increase = curTile.terrain.getWounds() / curTile.visited;
-
-		// System.out.println("H: " + hunger_increase + "; T: " + thirst_increase + "; W: " + wounds_increase);
-
-		setThirst(Math.max(getThirst() + thirst_increase, 0));
-		setHunger(Math.max(getHunger() + hunger_increase, 0));
-		setWounds(Math.max(getWounds() + wounds_increase, 0));
-
-		// Passes status change event to listeners.
-		for (ActorStatusListener l : statusListeners) {
-			l.statusUpdated(giveStatus());
-			l.actorAtTile(curTile);
-		}
+	void beginTurn() {
+		turnMoves = maxTurnMoves;
 		
+		// Enables listeners for player input.
+		getGame().gridDispatcher.setActor(this);
+		getGame().gridMouseListener.setActor(this);
+		getGame().gridDispatcher.setActive(true);
+		getGame().gridMouseListener.setActive(true);
+	}
+	
+	void doTurn() {}
+		
+	void endTurn() {
+		// Disables player input.
+		setActive(false);
+		getGame().gridDispatcher.setActive(false);
+		getGame().gridMouseListener.setActive(false);
+		getGame().turnManager.nextActorTurn();
+	}
+
+	@Override
+	void move(Tile targetTile) {		
+		Tile currentTile = getCurrentTile();
+		if (checkLegalMove(targetTile)) {
+			// Removes player icon from current tile.
+			currentTile.setIcon(null);
+						
+			// Sets player parameters.
+			incrMoves();
+			setLocation(targetTile.row, targetTile.col);
+			
+			// Informs tile of visit, changes tile border.
+			targetTile = getCurrentTile();
+			targetTile.visited += 1;
+			targetTile.setBorder(BorderFactory.createLineBorder(new Color(150, 0, 0, 255), 2 * targetTile.visited));
+			
+			int thirst_increase = targetTile.terrain.getThirst() / targetTile.visited;
+			int hunger_increase = targetTile.terrain.getHunger() / targetTile.visited;
+			int wounds_increase = targetTile.terrain.getWounds() / targetTile.visited;
+
+			setThirst(Math.max(getThirst() + thirst_increase, 0));
+			setHunger(Math.max(getHunger() + hunger_increase, 0));
+			setWounds(Math.max(getWounds() + wounds_increase, 0));
+
+			// Passes status change event to listeners.
+			for (ActorStatusListener l : statusListeners) {
+				l.statusUpdated(giveStatus());
+				l.actorAtTile(currentTile);
+			}
+			
+			turnMoves -= targetTile.cost;
+
+			// Sets icon of target tile.
+			targetTile.setIcon(icon);
+			getGame().moveView(targetTile);
+			
+			if (checkTurnEnd()) {
+				endTurn();
+			}
+		}
 	}
 
 	@Override
 	void move(int row, int col) {
+		Tile currentTile = getCurrentTile();
 		if (checkLegalMove(row, col)) {
-			getCurrentTile().setIcon(null);
+			// Removes player icon from current tile.
+			currentTile.setIcon(null);
+						
+			// Sets player parameters.
 			incrMoves();
 			setLocation(row, col);
-			getCurrentTile().setIcon(icon);
-			doTurn();
+			
+			// Informs tile of visit, changes tile border.
+			Tile targetTile = getCurrentTile();
+			targetTile.visited += 1;
+			targetTile.setBorder(BorderFactory.createLineBorder(new Color(150, 0, 0, 255), 2 * targetTile.visited));
+			
+			int thirst_increase = targetTile.terrain.getThirst() / targetTile.visited;
+			int hunger_increase = targetTile.terrain.getHunger() / targetTile.visited;
+			int wounds_increase = targetTile.terrain.getWounds() / targetTile.visited;
+
+			setThirst(Math.max(getThirst() + thirst_increase, 0));
+			setHunger(Math.max(getHunger() + hunger_increase, 0));
+			setWounds(Math.max(getWounds() + wounds_increase, 0));
+
+			// Passes status change event to listeners.
+			for (ActorStatusListener l : statusListeners) {
+				l.statusUpdated(giveStatus());
+				l.actorAtTile(currentTile);
+			}
+			
+			turnMoves -= targetTile.cost;
+
+			// Sets icon of target tile.
+			targetTile.setIcon(icon);
+			getGame().moveView(targetTile);
+			
+			if (checkTurnEnd()) {
+				endTurn();
+			}
+
 		}
-	}
+	}		
 	
-	void move(Tile tile) {
-		if (checkLegalMove(tile)) {
-			getCurrentTile().setIcon(null);
-			incrMoves();
-			setLocation(tile.row, tile.col);
-			getCurrentTile().setIcon(icon);
-			doTurn();
-		}
-	}
 
-
+	
 	/**
 	 * Places player on TileGrid. Now used for initializing new game 
 	 * Future use for loading savegame and placing actor at saved
@@ -172,14 +242,21 @@ class Player extends Actor {
 	@Override
 	void placeMe() {
 		if (getRow() == -1 && getCol() == -1) {
-			int startRow = (int) (Math.random() * getTileGrid().getTiles().length);
-			int startCol = (int) (Math.random() * getTileGrid().getTiles()[startRow].length);
+			int startRow = (int) (Math.random() * getGame().gameWorld.getTiles().length);
+			int startCol = (int) (Math.random() * getGame().gameWorld.getTiles()[startRow].length);
 			
 			setLocation(startRow, startCol);
 		} else {
 			setLocation(getRow(), getCol());
 		}
-		doTurn();
-		getCurrentTile().setIcon(icon);		
+		
+		Tile currentTile = getCurrentTile();
+		
+		currentTile.visited += 1;
+		currentTile.setBorder(BorderFactory.createLineBorder(new Color(150, 0, 0, 255), 2 * currentTile.visited));
+		currentTile.setIcon(icon);
+		
+		getGame().moveView(currentTile);
 	}
+
 }

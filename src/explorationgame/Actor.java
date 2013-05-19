@@ -17,7 +17,8 @@ public abstract class Actor {
 	private int col;
 	private int moves;
 	private boolean playerControlled;
-	private TileGrid tileGrid;
+	private boolean active;
+	private Game game;
 	
 	List<ActorStatusListener> statusListeners = new ArrayList<ActorStatusListener>();
 	
@@ -53,12 +54,12 @@ public abstract class Actor {
 		this.col = col;
 	}
 	
-	public TileGrid getTileGrid() {
-		return tileGrid;
+	public Game getGame() {
+		return game;
 	}
 
-	public void setTileGrid(TileGrid tileGrid) {
-		this.tileGrid = tileGrid;
+	public void setGame(Game game) {
+		this.game = game;
 	}
 
 	public void setLocation(int row, int col) {
@@ -86,10 +87,18 @@ public abstract class Actor {
 		this.playerControlled = playerControlled;
 	}
 	
+	public boolean isActive() {
+		return active;
+	}
+
+	public void setActive(boolean active) {
+		this.active = active;
+	}
+
 	public Tile getCurrentTile() {
 		try {
-			return tileGrid.getTiles()[row][col];
-		} catch (ArrayIndexOutOfBoundsException e) {
+			return game.gameWorld.getTile(row, col);
+		} catch (TileOutOfGameWorldException e) {
 			return null;
 		}
 	}
@@ -104,8 +113,7 @@ public abstract class Actor {
     }
     
 	/**
-	 * Invoked from GridMouseListener mousePressed function. Checks if targeted tile is next to
-	 * actor's current tile.
+	 * Checks if targeted tile is next to actor's current tile.
 	 */
 	public boolean checkLegalMove(Tile tile) {
 		int r = getRow();
@@ -124,20 +132,29 @@ public abstract class Actor {
 	
 	public boolean checkLegalMove(int row, int col) {
 		try {
-			Tile tile = getTileGrid().getTiles()[row][col];
+			Tile tile = game.gameWorld.getTile(row, col);
 			return checkLegalMove(tile);
-		} catch (ArrayIndexOutOfBoundsException error) {
+		} catch (TileOutOfGameWorldException e) {
     		System.out.println("Target tile is out of gameworld. Move not possible.");
     		return false;
 		}
 	}
-
-    
+ 
+	abstract void beginTurn();
 	abstract void doTurn();
+	abstract void endTurn();
 	
 	abstract void move(int row, int col);
 	abstract void move(Tile tile);
 	
+	/**
+	 * Places actor on TileGrid. Now used for initializing new game 
+	 * (using new Actor() or new Actor(name) constructor). 
+	 * Future use for loading savegame and placing actor at saved
+	 * position. 
+	 * 
+	 * @param act
+	 */
 	abstract void placeMe();
 
 }

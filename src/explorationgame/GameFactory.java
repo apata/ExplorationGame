@@ -24,6 +24,7 @@ public class GameFactory {
 	 * @param tg_w
 	 * @param tg_h
 	 * @param tg_cw
+	 * @return 
 	 * @return
 	 */
 	public JFrame createGame(String actorName, String terrainFileName, int tg_w, int tg_h, int tg_cw) {
@@ -32,7 +33,7 @@ public class GameFactory {
 		TerrainServer ts = new TerrainServer(terrain_array);
 		
 		TileGrid gameWorld = new TileGrid(tg_w, tg_h, tg_cw, ts);
-		Player player = new Player(gameWorld, actorName);
+		
 	    
 	    // --- Creates game window. ---
 		JFrame gameFrame = new JFrame("Game");
@@ -56,11 +57,23 @@ public class GameFactory {
 		gamePaneConstraints.fill = GridBagConstraints.BOTH;
 			    	    
 	    // Attaches player to game.
-	    game.addPlayer("PLAYER0", player);
+		Player player = new Player(actorName);
+		game.addActor("PLAYER0", player);
 	    
+		
+		// Attaches dummy actors to game.
+		
 	    // Creates status text area.
 	    StatusTextArea statusTextArea = new StatusTextArea();
 	    player.addStatusListener(statusTextArea);
+	    
+	    for (int i = 0; i < 4; i++) {
+	    	DummyActor d = new DummyActor("DA");
+			game.addActor("DUMMYACTOR" + i, d);
+			d.addStatusListener(statusTextArea);
+		}
+
+	    game.turnManager.addUpdateListener(statusTextArea);
 	    
 	    JScrollPane statusTextPane = new JScrollPane(statusTextArea);
 		GridBagConstraints statusTextPaneConstraints = new GridBagConstraints();
@@ -99,7 +112,8 @@ public class GameFactory {
 	    gameFrame.setVisible(true);
 	    
 	    game.moveView(player.getCurrentTile());
-		
+	    game.turnManager.manageTurn();
+	    
 	    return gameFrame;
 	}
 	

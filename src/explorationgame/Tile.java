@@ -15,9 +15,11 @@ class Tile extends JLabel {
 	int row;
 	int col;
 	int visited;
+	public int cost;
 		
 	public Tile(Terrain t) {
 		super();
+		cost = 1;
 		terrain = t;
 		setOpaque(true);
 		setFocusable(true);

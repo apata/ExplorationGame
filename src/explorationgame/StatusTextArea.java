@@ -3,7 +3,7 @@ package explorationgame;
 import javax.swing.JTextArea;
 
 @SuppressWarnings("serial")
-public class StatusTextArea extends JTextArea implements ActorStatusListener {
+public class StatusTextArea extends JTextArea implements ActorStatusListener, TurnUpdateListener {
 	public StatusTextArea() {
 		super();
 		this.setEditable(false);
@@ -16,8 +16,7 @@ public class StatusTextArea extends JTextArea implements ActorStatusListener {
 
 	@Override
 	public void statusUpdated(int[] status) {
-		append("Your status has changed!\n");
-		
+		append("Your status has changed! ");	
 	}
 
 	@Override
@@ -26,10 +25,22 @@ public class StatusTextArea extends JTextArea implements ActorStatusListener {
 		int hunger_increase = tile.terrain.getHunger() / tile.visited;
 		int wounds_increase = tile.terrain.getWounds() / tile.visited;
 		
-		append("Hunger increased by " + hunger_increase + 
-				"; thirst increased by " + thirst_increase + 
-				"; wounds increased by " + wounds_increase + ".\n");
-		// TODO Auto-generated method stub
+		append("[H: " + hunger_increase + 
+				"; T: " + thirst_increase + 
+				"; W: " + wounds_increase + "]\n");		
+	}
+
+	@Override
+	public void nextActorTurn(Actor actor) {}
+
+	@Override
+	public void newTurn() {
+		append("A new day dawns.\n");
+	}
+
+	@Override
+	public void dummyYell(String text) {
+		append(text);
 		
 	}
 

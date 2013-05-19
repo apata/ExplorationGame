@@ -6,20 +6,27 @@ import java.awt.event.KeyEvent;
 
 public class GridDispatcher implements KeyEventDispatcher {
 	private Actor actor;
-	private boolean enabled;
+	private boolean active;
 	
-	public GridDispatcher(Actor actor) {
-		super();
+	public void setActor(Actor actor) {
 		this.actor = actor;
-		this.enabled = true;
+	}
+	
+	public void setActive(boolean active) {
+		this.active = active;
+	}
+	
+	public GridDispatcher() {
+		super();
+		active = false;
 	}
 	
 	@Override
-	public boolean dispatchKeyEvent(KeyEvent e) {
-		int row = actor.getRow();
-		int col = actor.getCol();
-		
-		if (e.getID() == KeyEvent.KEY_RELEASED && enabled) {
+	public boolean dispatchKeyEvent(KeyEvent e) {		
+		if (e.getID() == KeyEvent.KEY_RELEASED && active) {
+			int row = actor.getRow();
+			int col = actor.getCol();
+
             System.out.print("Released: ");
             System.out.println(e.getKeyCode());
             if (e.getKeyCode() == KeyEvent.VK_NUMPAD8 || e.getKeyCode() == KeyEvent.VK_UP) {
@@ -41,7 +48,7 @@ public class GridDispatcher implements KeyEventDispatcher {
             } else if (e.getKeyCode() == KeyEvent.VK_NUMPAD5) {
             	actor.move(row, col);
             }
-		}
+        }
 		return false;
 	}
 	

@@ -11,19 +11,27 @@ import java.awt.event.MouseEvent;
  */
 public class GridMouseListener extends MouseAdapter {
 	private Actor actor;
-	private boolean enabled;
+	private boolean active;
 	
-	public GridMouseListener(Actor actor) {
+	public void setActor(Actor actor) {
 		this.actor = actor;
-		this.enabled = true;
+	}
+	
+	public void setActive(boolean active) {
+		this.active = active;
+	}
+
+	public GridMouseListener() {
+		super();
 	}
 	
 	@Override
 	public void mousePressed(MouseEvent e) {
-		if (e.getButton() == MouseEvent.BUTTON1 && enabled) {
+		if (e.getButton() == MouseEvent.BUTTON1 && active) {
 			Tile sourceTile = (Tile) e.getSource();
 			System.out.print("Pressed " + sourceTile.terrain.getName() + " at " + sourceTile.row + ", " + sourceTile.col + ". ");
 			actor.move(sourceTile);
 			}
 		}
+
 	}

@@ -38,4 +38,10 @@ public class StatusLabel extends JLabel implements ActorStatusListener {
 		
 	}
 
+	@Override
+	public void dummyYell(String text) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

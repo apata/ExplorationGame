@@ -1,6 +1,9 @@
 package explorationgame;
 
 import java.awt.*;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
+
 import javax.swing.*;
 
 /**
@@ -10,7 +13,7 @@ import javax.swing.*;
  *
  */
 @SuppressWarnings("serial")
-public class MainMenuFrame extends JPanel {
+public class MainMenuFrame extends JPanel implements WindowListener {
 	public final Dimension menu_window_default_dimension = new Dimension(600, 200);
 	public final String terrain_file_name = "resources\\terrains.xml";
 	
@@ -49,20 +52,31 @@ public class MainMenuFrame extends JPanel {
 		add(exitButton);
 		
 	}
+
+	@Override
+	public void windowClosed(WindowEvent e) {
+		this.getTopLevelAncestor().setVisible(true);
+	}
 	
-	/* Tries to implement the checkDeath function in a way that is accessible to the
-	 * main menu frame. So far unsuccessful.
-	 * @see explorationgame.UpdateListener#statusUpdated(int[])
-	 */
-//	@Override
-//	public void statusUpdated(int[] status) {
-//		Player dummyActor = new Player();
-//		dummyActor.setHunger(status[0]);
-//		dummyActor.setThirst(status[1]);
-//		dummyActor.setWounds(status[2]);
-//		
-//		if (dummyActor.checkDeath()) {
-//			this.getTopLevelAncestor().setVisible(true);
-//		}
-//	}
+	@Override
+	public void windowOpened(WindowEvent e) {
+		this.getTopLevelAncestor().setVisible(false);
+	}
+
+	@Override
+	public void windowClosing(WindowEvent e) {}
+
+	@Override
+	public void windowDeactivated(WindowEvent e) {}
+
+	@Override
+	public void windowDeiconified(WindowEvent e) {}
+
+	@Override
+	public void windowIconified(WindowEvent e) {}
+
+	@Override
+	public void windowActivated(WindowEvent e) {}
+
+	
 }
