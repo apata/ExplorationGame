@@ -4,24 +4,27 @@ import java.awt.Color;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 
+
 /**
- * Represents human or AI controlled objects in game world. Currently used
- * as player. Probably will be abstract in future versions.
+ * Represents player of game.
  * 
- * @author artur
+ * @author Artur
  *
  */
-
 class Player extends Actor {
 	private int hunger;
 	private int thirst;
 	private int wounds;
-		
+			
 	final int maxHunger = 50;
 	final int maxThirst = 50;
 	final int maxWounds = 15;
 	
 	ImageIcon icon;
+	
+	GridDispatcher gridDispatcher;
+	GridMouseListener gridMouseListener;
+
 	
 	int getHunger() {
 		return hunger;
@@ -124,7 +127,7 @@ class Player extends Actor {
 		int hunger_increase = curTile.terrain.hunger / curTile.visited;
 		int wounds_increase = curTile.terrain.wounds / curTile.visited;
 
-		System.out.println("H: " + hunger_increase + "; T: " + thirst_increase + "; W: " + wounds_increase);
+		// System.out.println("H: " + hunger_increase + "; T: " + thirst_increase + "; W: " + wounds_increase);
 
 		setThirst(Math.max(getThirst() + thirst_increase, 0));
 		setHunger(Math.max(getHunger() + hunger_increase, 0));
@@ -140,10 +143,43 @@ class Player extends Actor {
 
 	@Override
 	void move(int row, int col) {
-		getCurrentTile().setIcon(null);
-		incrMoves();
-		setLocation(row, col);
-		getCurrentTile().setIcon(icon);
+		if (checkLegalMove(row, col)) {
+			getCurrentTile().setIcon(null);
+			incrMoves();
+			setLocation(row, col);
+			getCurrentTile().setIcon(icon);
+			doTurn();
+		}
+	}
+	
+	void move(Tile tile) {
+		if (checkLegalMove(tile)) {
+			getCurrentTile().setIcon(null);
+			incrMoves();
+			setLocation(tile.row, tile.col);
+			getCurrentTile().setIcon(icon);
+			doTurn();
+		}
+	}
+
+
+	/**
+	 * Places player on TileGrid. Now used for initializing new game 
+	 * Future use for loading savegame and placing actor at saved
+	 * position. 
+	 * 
+	 */	
+	@Override
+	void placeMe() {
+		if (getRow() == -1 && getCol() == -1) {
+			int startRow = (int) (Math.random() * getTileGrid().getTiles().length);
+			int startCol = (int) (Math.random() * getTileGrid().getTiles()[startRow].length);
+			
+			setLocation(startRow, startCol);
+		} else {
+			setLocation(getRow(), getCol());
+		}
 		doTurn();
+		getCurrentTile().setIcon(icon);		
 	}
 }

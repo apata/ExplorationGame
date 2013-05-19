@@ -30,13 +30,8 @@ public class GameFactory {
 		Terrain[] terrain_array = ReadTerrainsXML.make_terrains(ReadTerrainsXML.parse_xml(terrainFileName));
 		TerrainServer ts = new TerrainServer(terrain_array);
 		
-		TileGrid tg = new TileGrid(tg_w, tg_h, tg_cw, ts);
-		Player player = new Player(tg, actorName);
-		
-		tg.placeActor(player);
-		
-	    StatusLabel statusLabel = new StatusLabel(tg.player);
-	    tg.player.addStatusListener(statusLabel);  
+		TileGrid gameWorld = new TileGrid(tg_w, tg_h, tg_cw, ts);
+		Player player = new Player(gameWorld, actorName);
 	    
 	    // --- Creates game window. ---
 		JFrame gameFrame = new JFrame("Game");
@@ -48,31 +43,23 @@ public class GameFactory {
 		// Sets X button function.
 		gameFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		
-		// Creates scroll bars for game field.
-		JScrollPane gameScrollPane = new JScrollPane(tg);
-		GridBagConstraints gameScrollPaneConstraints = new GridBagConstraints();
-		gameScrollPaneConstraints.gridx = 0;
-		gameScrollPaneConstraints.gridy = 0;
-		gameScrollPaneConstraints.ipadx = 460;
-		gameScrollPaneConstraints.ipady = 600;
-		gameScrollPaneConstraints.weightx = 1;
-		gameScrollPaneConstraints.weighty = 0.8;
-		gameScrollPaneConstraints.fill = GridBagConstraints.BOTH;
-		
-
-	    gameScrollPane.setPreferredSize(game_scroll_field_default_dimension);
-	    
-	    // Remove scroll function from arrow keys. Redefined in TileGrid moveView().
-	    InputMap inputMap = gameScrollPane.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
-	    inputMap.put(KeyStroke.getKeyStroke("RIGHT"), "do-nothing");
-	    inputMap.put(KeyStroke.getKeyStroke("LEFT"), "do-nothing");
-	    inputMap.put(KeyStroke.getKeyStroke("UP"), "do-nothing");
-	    inputMap.put(KeyStroke.getKeyStroke("DOWN"), "do-nothing");
+		// Creates game field.
+		Game game = new Game(gameWorld);
+		GridBagConstraints gamePaneConstraints = new GridBagConstraints();
+		gamePaneConstraints.gridx = 0;
+		gamePaneConstraints.gridy = 0;
+		gamePaneConstraints.ipadx = 460;
+		gamePaneConstraints.ipady = 600;
+		gamePaneConstraints.weightx = 1;
+		gamePaneConstraints.weighty = 0.8;
+		gamePaneConstraints.fill = GridBagConstraints.BOTH;
+			    	    
+	    // Attaches player to game.
+	    game.addPlayer("PLAYER0", player);
 	    
 	    // Creates status text area.
 	    StatusTextArea statusTextArea = new StatusTextArea();
-	    tg.player.addStatusListener(statusTextArea);
-	    statusTextArea.append("");
+	    player.addStatusListener(statusTextArea);
 	    
 	    JScrollPane statusTextPane = new JScrollPane(statusTextArea);
 		GridBagConstraints statusTextPaneConstraints = new GridBagConstraints();
@@ -85,6 +72,10 @@ public class GameFactory {
 		statusTextPaneConstraints.fill = GridBagConstraints.BOTH;
 
 	    statusTextPane.setPreferredSize(text_scroll_field_default_dimension);
+
+	    // Creates status label.
+	    StatusLabel statusLabel = new StatusLabel(player);
+	    player.addStatusListener(statusLabel);  
 	    
 		GridBagConstraints statusLabelConstraints = new GridBagConstraints();
 		statusLabelConstraints.gridx = 0;
@@ -95,7 +86,7 @@ public class GameFactory {
 		statusLabelConstraints.weighty = 0.05;
 		statusLabelConstraints.fill = GridBagConstraints.BOTH;
 		
-	    gameFrame.getContentPane().add(gameScrollPane, gameScrollPaneConstraints);
+	    gameFrame.getContentPane().add(game, gamePaneConstraints);
 	    gameFrame.getContentPane().add(statusTextPane, statusTextPaneConstraints);
 	    gameFrame.getContentPane().add(statusLabel, statusLabelConstraints);
 
@@ -106,7 +97,7 @@ public class GameFactory {
 	    gameFrame.setLocationByPlatform(true);
 	    gameFrame.setVisible(true);
 	    
-	    tg.moveView(tg.player.getCurrentTile());
+	    game.moveView(player.getCurrentTile());
 		
 	    return gameFrame;
 	}

@@ -13,14 +13,14 @@ public class StatusLabel extends JLabel implements ActorStatusListener {
 	int[] max_values;
 	String actor_name;
 	
-	public StatusLabel(Player actor) {
-		int[] temp = {actor.maxHunger, actor.maxThirst, actor.maxWounds};
+	public StatusLabel(Player player) {
+		int[] temp = {player.maxHunger, player.maxThirst, player.maxWounds};
 		max_values = temp;
-		actor_name = actor.getName();
-		this.setText(actor_name + " status ::: Hunger = " + actor.getHunger() + " (max: " + max_values[0] + 
-				") | Thirst = " + actor.getThirst() + " (max: " + max_values[1] + 
-				") | Wounds = " + actor.getWounds() + " (max: " + max_values[2] + 
-				") | Total moves = " + actor.getMoves());
+		actor_name = player.getName();
+		this.setText(actor_name + " status ::: Hunger = " + player.getHunger() + " (max: " + max_values[0] + 
+				") | Thirst = " + player.getThirst() + " (max: " + max_values[1] + 
+				") | Wounds = " + player.getWounds() + " (max: " + max_values[2] + 
+				") | Total moves = " + player.getMoves());
 	}
 	
 	@Override

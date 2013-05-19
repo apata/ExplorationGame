@@ -3,8 +3,16 @@ package explorationgame;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Represents human or AI controlled objects in game world.
+ * 
+ * @author artur
+ *
+ */
+
 public abstract class Actor {
 	private String name;
+	private String gameID;
 	private int row;
 	private int col;
 	private int moves;
@@ -19,6 +27,14 @@ public abstract class Actor {
 	
 	public void setName(String name) {
 		this.name = name;
+	}
+	
+	public String getGameID() {
+		return gameID;
+	}
+	
+	public void setGameID(String gameID) {
+		this.gameID = gameID;
 	}
 	
 	public int getRow() {
@@ -87,7 +103,41 @@ public abstract class Actor {
         statusListeners.add(l);
     }
     
+	/**
+	 * Invoked from GridMouseListener mousePressed function. Checks if targeted tile is next to
+	 * actor's current tile.
+	 */
+	public boolean checkLegalMove(Tile tile) {
+		int r = getRow();
+		int c = getCol();
+		
+		boolean nextToActorRow = tile.row == r || tile.row == r - 1 || tile.row == r + 1;
+		boolean nextToActorCol = tile.col == c || tile.col == c - 1 || tile.col == c + 1;
+		
+		if (nextToActorRow && nextToActorCol) {
+			return true;
+		} else {
+			System.out.println("Target tile is not next to current location. Move not possible.");
+			return false;
+		}
+	}
+	
+	public boolean checkLegalMove(int row, int col) {
+		try {
+			Tile tile = getTileGrid().getTiles()[row][col];
+			return checkLegalMove(tile);
+		} catch (ArrayIndexOutOfBoundsException error) {
+    		System.out.println("Target tile is out of gameworld. Move not possible.");
+    		return false;
+		}
+	}
+
+    
 	abstract void doTurn();
+	
 	abstract void move(int row, int col);
+	abstract void move(Tile tile);
+	
+	abstract void placeMe();
 
 }

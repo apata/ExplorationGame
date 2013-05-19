@@ -2,11 +2,6 @@ package explorationgame;
 
 import java.awt.Dimension;
 import java.awt.GridLayout;
-import java.awt.KeyEventDispatcher;
-import java.awt.KeyboardFocusManager;
-import java.awt.Rectangle;
-import java.awt.event.KeyEvent;
-
 import javax.swing.*;
 
 /**
@@ -23,7 +18,6 @@ class TileGrid extends JPanel {
 	public static final int default_cell_width = 20;
 	
 	private Tile[][] tiles;
-	private KeyEventDispatcher keyEventDispatcher;
 	
 	/**
 	 * Currently, only one Actor can be attached to the TileGrid - the player.
@@ -36,39 +30,6 @@ class TileGrid extends JPanel {
 	 * @author artur
 	 *
 	 */
-	private class GridDispatcher implements KeyEventDispatcher {
-		
-		@Override
-		public boolean dispatchKeyEvent(KeyEvent e) {
-			int row = player.getRow();
-			int col = player.getCol();
-			
-			if (e.getID() == KeyEvent.KEY_RELEASED) {
-                System.out.print("Released: ");
-                System.out.println(e.getKeyCode());
-                if (e.getKeyCode() == KeyEvent.VK_NUMPAD8 || e.getKeyCode() == KeyEvent.VK_UP) {
-                	moveActor(row - 1, col);
-                } else if (e.getKeyCode() == KeyEvent.VK_NUMPAD9) {
-                	moveActor(row - 1, col + 1);
-                } else if (e.getKeyCode() == KeyEvent.VK_NUMPAD6 || e.getKeyCode() == KeyEvent.VK_RIGHT) {
-                	moveActor(row, col + 1);
-                } else if (e.getKeyCode() == KeyEvent.VK_NUMPAD3) {
-                	moveActor(row + 1, col + 1);
-                } else if (e.getKeyCode() == KeyEvent.VK_NUMPAD2 || e.getKeyCode() == KeyEvent.VK_DOWN) {
-                	moveActor(row + 1, col);
-                } else if (e.getKeyCode() == KeyEvent.VK_NUMPAD1) {
-                	moveActor(row + 1, col - 1);
-                } else if (e.getKeyCode() == KeyEvent.VK_NUMPAD4 || e.getKeyCode() == KeyEvent.VK_LEFT) {
-                	moveActor(row, col - 1);
-                } else if (e.getKeyCode() == KeyEvent.VK_NUMPAD7) {
-                	moveActor(row - 1, col - 1);
-                } else if (e.getKeyCode() == KeyEvent.VK_NUMPAD5) {
-                	moveActor(row, col);
-                }
-			}
-			return false;
-		}
-    }
 	
 	public TileGrid(TerrainServer ts) {
 		this(default_rows, default_cols, default_cell_width, ts);
@@ -86,7 +47,6 @@ class TileGrid extends JPanel {
 	
 	public TileGrid(int rows, int cols, int cell_width, TerrainServer ts) {		
 		tiles = new Tile[rows][cols];
-		GridMouseListener gridMouseListener = new GridMouseListener(this);
 		Dimension tilePrefSize = new Dimension(cell_width, cell_width);
 		setLayout(new GridLayout(rows, cols));
 		
@@ -98,17 +58,12 @@ class TileGrid extends JPanel {
 				tile.visited = 0;
 				String text = tile.getToolTipText();
 				tile.setToolTipText(text + "<br><b>Coordinates: </b>" + row + ", " + col);
-				tile.addMouseListener(gridMouseListener);
+				//tile.addMouseListener(gridMouseListener);
 				tile.setPreferredSize(tilePrefSize);
 				add(tile);
 				tiles[row][col] = tile;
 			}
 		}
-		
-		keyEventDispatcher = new GridDispatcher();
-        KeyboardFocusManager manager = KeyboardFocusManager.getCurrentKeyboardFocusManager();
-        manager.addKeyEventDispatcher(keyEventDispatcher);
-
 	}
 	
 	public Tile[][] getTiles() {
@@ -133,21 +88,21 @@ class TileGrid extends JPanel {
 	 * 
 	 * @param act
 	 */
-	public void placeActor(Player act) {
-		this.player = act;
-		if (player.getRow() == -1 && player.getCol() == -1) {
-			int startRow = (int) (Math.random() * tiles.length);
-			int startCol = (int) (Math.random() * tiles[startRow].length);
-			
-			player.setLocation(startRow, startCol);
-			player.doTurn();
-		} else {
-			player.setLocation(player.getRow(), player.getCol());
-			player.doTurn();
-			
-		}
-		player.getCurrentTile().setIcon(player.icon);
-	}
+//	public void placeActor(Player act) {
+//		this.player = act;
+//		if (player.getRow() == -1 && player.getCol() == -1) {
+//			int startRow = (int) (Math.random() * tiles.length);
+//			int startCol = (int) (Math.random() * tiles[startRow].length);
+//			
+//			player.setLocation(startRow, startCol);
+//			player.doTurn();
+//		} else {
+//			player.setLocation(player.getRow(), player.getCol());
+//			player.doTurn();
+//			
+//		}
+//		player.getCurrentTile().setIcon(player.icon);
+//	}
 	
 	/**
 	 * Moves character that is passed to KeyEvent handler, 
@@ -157,13 +112,13 @@ class TileGrid extends JPanel {
 	 * @param row
 	 * @param col
 	 */
-	public void moveActor(int row, int col) {
-		try {
-			moveActor(tiles[row][col]);
-    	} catch (ArrayIndexOutOfBoundsException error) {
-    		System.out.println("Target tile is out of gameworld. Move not possible.");
-		}
-	}
+//	public void moveActor(int row, int col) {
+//		try {
+//			moveActor(tiles[row][col]);
+//    	} catch (ArrayIndexOutOfBoundsException error) {
+//    		System.out.println("Target tile is out of gameworld. Move not possible.");
+//		}
+//	}
 	
 	/**
 	 * Moves character to argument Tile object, which is known to exist
@@ -172,53 +127,65 @@ class TileGrid extends JPanel {
 	 * 
 	 * @param tile
 	 */
-	public void moveActor(Tile tile) {
-		player.move(tile.row, tile.col);
-		moveView(tile);
-		
-		if (player.checkDeath()) {
-			KeyboardFocusManager manager = KeyboardFocusManager.getCurrentKeyboardFocusManager();
-			manager.removeKeyEventDispatcher(keyEventDispatcher);
-			
-			JOptionPane.showMessageDialog(null, "You have died.", "INFO", JOptionPane.PLAIN_MESSAGE);
-			
-			exit();
-			//System.out.print("Actor is dead. ");
-		}
-	}
+//	public void moveActor(Tile tile) {
+//		player.move(tile.row, tile.col);
+//		//moveView(tile);
+//		
+//		if (player.checkDeath()) {
+//			KeyboardFocusManager manager = KeyboardFocusManager.getCurrentKeyboardFocusManager();
+//			manager.removeKeyEventDispatcher(keyEventDispatcher);
+//			
+//			JOptionPane.showMessageDialog(null, "You have died.", "INFO", JOptionPane.PLAIN_MESSAGE);
+//			
+//			exit();
+//			//System.out.print("Actor is dead. ");
+//		}
+//	}
 	
-	/**
-	 * Centers JScrollpane view on player, if possible.
-	 * 
-	 * @param tile
-	 */	
-	public void moveView(Tile tile) {
-		Rectangle viewportBounds = ((JViewport) this.getParent()).getViewRect();
-		Rectangle tileBounds = tile.getBounds();
-		tileBounds.x -= viewportBounds.width / 2;
-		tileBounds.y -= viewportBounds.height / 2;
-		tileBounds.width = viewportBounds.width;
-		tileBounds.height = viewportBounds.height;
-		this.scrollRectToVisible(tileBounds);
-	}
+//	/**
+//	 * Centers JScrollpane view on player, if possible.
+//	 * 
+//	 * @param tile
+//	 */	
+//	public void moveView(Tile tile) {
+//		Rectangle viewportBounds = ((JViewport) this.getParent()).getViewRect();
+//		Rectangle tileBounds = tile.getBounds();
+//		tileBounds.x -= viewportBounds.width / 2;
+//		tileBounds.y -= viewportBounds.height / 2;
+//		tileBounds.width = viewportBounds.width;
+//		tileBounds.height = viewportBounds.height;
+//		this.scrollRectToVisible(tileBounds);
+//	}
 
 	/**
 	 * Invoked from GridMouseListener mousePressed function. Checks if targeted tile is next to
 	 * actor's current tile.
 	 */
-	public void tilePressed(Tile tile) {
-		int ar = player.getRow();
-		int ac = player.getCol();
-		
-		boolean nextToActorRow = tile.row == ar || tile.row == ar - 1 || tile.row == ar + 1;
-		boolean nextToActorCol = tile.col == ac || tile.col == ac - 1 || tile.col == ac + 1;
-		
-		if (nextToActorRow && nextToActorCol) {
-			moveActor(tile);
-		} else {
-			System.out.println("Target tile is not next to current location. Move not possible.");
-		}
-	}
+//	public boolean checkLegalMove(Tile tile) {
+//		int r = player.getRow();
+//		int c = player.getCol();
+//		
+//		boolean nextToActorRow = tile.row == r || tile.row == r - 1 || tile.row == r + 1;
+//		boolean nextToActorCol = tile.col == c || tile.col == c - 1 || tile.col == c + 1;
+//		
+//		if (nextToActorRow && nextToActorCol) {
+//			return true;
+//		} else {
+//			System.out.println("Target tile is not next to current location. Move not possible.");
+//			return false;
+//		}
+//	}
+//	
+//	public boolean checkLegalMove(int row, int col) {
+//		try {
+//			Tile tile = tiles[row][col];
+//			return true;
+//		} catch (ArrayIndexOutOfBoundsException error) {
+//    		System.out.println("Target tile is out of gameworld. Move not possible.");
+//    		return false;
+//		}
+//	}
+
 	
 	
 	/**
