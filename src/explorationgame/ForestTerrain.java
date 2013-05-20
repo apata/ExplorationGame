@@ -10,9 +10,9 @@ import java.awt.Color;
  *
  */
 
-class Forest extends Terrain {
+class ForestTerrain extends Terrain {
 	
-	public Forest (){
+	public ForestTerrain (){
 		setName("Forest");
 		setColor(new Color(51, 102, 0, 255));
 		setWeight(50);

@@ -190,52 +190,17 @@ class Player extends Actor {
 
 	@Override
 	void move(int row, int col) {
-		Tile currentTile = getCurrentTile();
-		if (checkLegalMove(row, col)) {
-			// Removes player icon from current tile.
-			currentTile.setIcon(null);
-						
-			// Sets player parameters.
-			incrMoves();
-			setLocation(row, col);
-			
-			// Informs tile of visit, changes tile border.
-			Tile targetTile = getCurrentTile();
-			targetTile.visited += 1;
-			targetTile.setBorder(BorderFactory.createLineBorder(new Color(150, 0, 0, 255), 2 * targetTile.visited));
-			
-			int thirst_increase = targetTile.terrain.getThirst() / targetTile.visited;
-			int hunger_increase = targetTile.terrain.getHunger() / targetTile.visited;
-			int wounds_increase = targetTile.terrain.getWounds() / targetTile.visited;
-
-			setThirst(Math.max(getThirst() + thirst_increase, 0));
-			setHunger(Math.max(getHunger() + hunger_increase, 0));
-			setWounds(Math.max(getWounds() + wounds_increase, 0));
-
-			// Passes status change event to listeners.
-			for (ActorStatusListener l : statusListeners) {
-				l.statusUpdated(giveStatus());
-				l.actorAtTile(currentTile);
-			}
-			
-			turnMoves -= targetTile.cost;
-
-			// Sets icon of target tile.
-			targetTile.setIcon(icon);
-			getGame().moveView(targetTile);
-			
-			if (checkTurnEnd()) {
-				endTurn();
-			}
-
+		try {
+			Tile targetTile = getGame().gameWorld.getTile(row, col);
+			move(targetTile);
+		} catch (TileOutOfGameWorldException e) {
+			System.out.println("Target tile is out of gameworld. Move not possible.");
 		}
 	}		
 	
-
-	
 	/**
 	 * Places player on TileGrid. Now used for initializing new game 
-	 * Future use for loading savegame and placing actor at saved
+	 * Future use for loading saved game and placing actor at saved
 	 * position. 
 	 * 
 	 */	

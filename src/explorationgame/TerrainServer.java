@@ -21,7 +21,6 @@ class TerrainServer {
 		}
 	}
 
-	
 	/**
 	 * Serves random weighed Terrain.
 	 * 

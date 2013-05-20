@@ -10,9 +10,9 @@ import java.awt.Color;
  *
  */
 
-class Plains extends Terrain {
+class PlainsTerrain extends Terrain {
 
-	public Plains (){
+	public PlainsTerrain (){
 		setName("Plains");
 		setColor(new Color(255, 255, 102, 255));
 		setWeight(10);
