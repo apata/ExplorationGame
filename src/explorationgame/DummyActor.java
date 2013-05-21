@@ -17,13 +17,9 @@ public class DummyActor extends Actor {
 	@Override
 	void beginTurn() {
 		for (ActorStatusListener l : statusListeners) {
-			l.dummyYell(getGameID() + " active!\n");
+			l.pushText(getGameID() + " active!\n");
 		}
 		endTurn();
-	}
-
-	@Override
-	void doTurn() {
 	}
 
 	@Override

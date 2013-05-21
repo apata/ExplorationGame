@@ -23,6 +23,10 @@ class Player extends Actor {
 	final int maxWounds = 15;
 	final int maxTurnMoves = 4;
 	
+	final Terrain[] impassableTerrain = {
+			new MountainsTerrain()
+			};
+		
 	ImageIcon icon;
 	
 	int getHunger() {
@@ -49,6 +53,14 @@ class Player extends Actor {
 		this.wounds = wounds;
 	}
 		
+	public int getTurnMoves() {
+		return turnMoves;
+	}
+
+	public void setTurnMoves(int turnMoves) {
+		this.turnMoves = turnMoves;
+	}
+
 	public Player() {
 		hunger = 0;
 		thirst = 0;
@@ -56,7 +68,7 @@ class Player extends Actor {
 		setPlayerControlled(true);
 		
 		setMoves(0);
-		icon = new ImageIcon("resources\\actor_icon.png");
+		icon = new ImageIcon("resources\\player.png");
 		
 		setRow(-1);
 		setCol(-1);
@@ -121,13 +133,21 @@ class Player extends Actor {
 	 * @return
 	 */
 	public int[] giveStatus() {
-		int[] status = {hunger, thirst, wounds, getMoves()};
+		int[] status = {hunger, thirst, wounds, turnMoves, getMoves()};
 		return status;
 	}
 
 	@Override
 	void beginTurn() {
-		turnMoves = maxTurnMoves;
+		incrMoves();
+		turnMoves += maxTurnMoves;
+		
+		// Passes status to listeners.
+		for (ActorStatusListener l : statusListeners) {
+			l.statusUpdated(giveStatus());
+			l.actorAtTile(getCurrentTile());
+		}
+
 		
 		// Enables listeners for player input.
 		getGame().gridDispatcher.setActor(this);
@@ -135,17 +155,32 @@ class Player extends Actor {
 		getGame().gridDispatcher.setActive(true);
 		getGame().gridMouseListener.setActive(true);
 	}
-	
-	void doTurn() {}
-		
+			
 	void endTurn() {
 		// Disables player input.
 		setActive(false);
 		getGame().gridDispatcher.setActive(false);
 		getGame().gridMouseListener.setActive(false);
+		
+		// Activates next actor turn.
 		getGame().turnManager.nextActorTurn();
 	}
 
+	@Override
+	public boolean checkLegalMove(Tile tile) {
+		for (Terrain t : impassableTerrain) {
+			if (t.equals(tile.terrain)) {
+				return false;
+			}
+		}
+		if (tile.terrain.getMoveCost() > turnMoves) {
+			for (ActorStatusListener l : statusListeners) {
+				l.pushText("You push well into the night. The next morning will be harsh!\n");
+			}
+		}
+		return super.checkLegalMove(tile);
+	}
+	
 	@Override
 	void move(Tile targetTile) {		
 		Tile currentTile = getCurrentTile();
@@ -154,7 +189,6 @@ class Player extends Actor {
 			currentTile.setIcon(null);
 						
 			// Sets player parameters.
-			incrMoves();
 			setLocation(targetTile.row, targetTile.col);
 			
 			// Informs tile of visit, changes tile border.
@@ -169,6 +203,8 @@ class Player extends Actor {
 			setThirst(Math.max(getThirst() + thirst_increase, 0));
 			setHunger(Math.max(getHunger() + hunger_increase, 0));
 			setWounds(Math.max(getWounds() + wounds_increase, 0));
+			
+			turnMoves -= targetTile.terrain.getMoveCost();
 
 			// Passes status change event to listeners.
 			for (ActorStatusListener l : statusListeners) {
@@ -176,8 +212,6 @@ class Player extends Actor {
 				l.actorAtTile(currentTile);
 			}
 			
-			turnMoves -= targetTile.cost;
-
 			// Sets icon of target tile.
 			targetTile.setIcon(icon);
 			getGame().moveView(targetTile);

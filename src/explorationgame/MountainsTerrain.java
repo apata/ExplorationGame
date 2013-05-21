@@ -17,5 +17,6 @@ public class MountainsTerrain extends Terrain {
 		setHunger(10);
 		setThirst(-5);
 		setWounds(2);
+		setMoveCost(3);
 	}
 }

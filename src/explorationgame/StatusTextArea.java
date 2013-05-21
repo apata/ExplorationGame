@@ -39,7 +39,7 @@ public class StatusTextArea extends JTextArea implements ActorStatusListener, Tu
 	}
 
 	@Override
-	public void dummyYell(String text) {
+	public void pushText(String text) {
 		append(text);
 		
 	}

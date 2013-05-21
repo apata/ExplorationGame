@@ -20,7 +20,8 @@ public class StatusLabel extends JLabel implements ActorStatusListener {
 		this.setText(actor_name + " status ::: Hunger = " + player.getHunger() + " (max: " + max_values[0] + 
 				") | Thirst = " + player.getThirst() + " (max: " + max_values[1] + 
 				") | Wounds = " + player.getWounds() + " (max: " + max_values[2] + 
-				") | Total moves = " + player.getMoves());
+				") | Moves left = " + player.getTurnMoves() + 
+				" | Turns = " + player.getMoves());
 	}
 	
 	@Override
@@ -28,7 +29,9 @@ public class StatusLabel extends JLabel implements ActorStatusListener {
 		this.setText(actor_name + " status ::: Hunger = " + status[0] + " (max: " + max_values[0] + 
 				") | Thirst = " + status[1] + " (max: " + max_values[1] + 
 				") | Wounds = " + status[2] + " (max: " + max_values[2] + 
-				") | Total moves = " + status[3]);
+				") | Moves left = " + status[3] + 
+				" | Turns = " + status[4]);
+
 		this.repaint();
 	}
 
@@ -39,7 +42,7 @@ public class StatusLabel extends JLabel implements ActorStatusListener {
 	}
 
 	@Override
-	public void dummyYell(String text) {
+	public void pushText(String text) {
 		// TODO Auto-generated method stub
 		
 	}

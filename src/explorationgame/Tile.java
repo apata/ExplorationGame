@@ -15,11 +15,9 @@ class Tile extends JLabel {
 	int row;
 	int col;
 	int visited;
-	public int cost;
 		
 	public Tile(Terrain t) {
 		super();
-		cost = 1;
 		terrain = t;
 		setOpaque(true);
 		setFocusable(true);
@@ -30,6 +28,7 @@ class Tile extends JLabel {
 		setToolTipText("<html><u><b>" + terrain.getName() + "</u></b>" +
 						"<br><b>Hunger: </b>" + terrain.getHunger() +
 						"<br><b>Thirst: </b>" + terrain.getThirst() +
-						"<br><b>Wounds: </b>" + terrain.getWounds());
+						"<br><b>Wounds: </b>" + terrain.getWounds() +
+						"<br><b>Cost to move: </b>" + terrain.getMoveCost());
 		}
 }

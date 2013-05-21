@@ -19,5 +19,6 @@ class PlainsTerrain extends Terrain {
 		setHunger(-5);
 		setThirst(0);
 		setWounds(-1);
+		setMoveCost(1);
 	}
 }

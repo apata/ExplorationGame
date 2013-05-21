@@ -141,7 +141,6 @@ public abstract class Actor {
 	}
  
 	abstract void beginTurn();
-	abstract void doTurn();
 	abstract void endTurn();
 	
 	abstract void move(int row, int col);

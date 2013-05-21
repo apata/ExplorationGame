@@ -19,5 +19,6 @@ class ForestTerrain extends Terrain {
 		setHunger(-5);
 		setThirst(5);
 		setWounds(1);
+		setMoveCost(2);
 	}
 }

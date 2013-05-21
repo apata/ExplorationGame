@@ -16,6 +16,8 @@ abstract class Terrain {
 	private int hunger;
 	private int thirst;
 	private int wounds;
+	private int moveCost;
+	
 
 	public String getName() {
 		return name;
@@ -65,6 +67,14 @@ abstract class Terrain {
 		this.wounds = wounds;
 	}
 	
+	public int getMoveCost() {
+		return moveCost;
+	}
+
+	public void setMoveCost(int moveCost) {
+		this.moveCost = moveCost;
+	}
+
 	@Override
 	public String toString() {
 		return this.name;
