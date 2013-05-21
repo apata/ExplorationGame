@@ -59,18 +59,16 @@ public class GameFactory {
 	    // Attaches player to game.
 		Player player = new Player(actorName);
 		game.addActor("PLAYER0", player);
-	    
-		
-		// Attaches dummy actors to game.
-		
+	    		
 	    // Creates status text area.
 	    StatusTextArea statusTextArea = new StatusTextArea();
 	    player.addStatusListener(statusTextArea);
 	    
+	    // Adds White Walkers to game.
 	    for (int i = 0; i < 4; i++) {
-	    	DummyActor d = new DummyActor("DA");
-			game.addActor("DUMMYACTOR" + i, d);
-			d.addStatusListener(statusTextArea);
+	    	Whitewalker ww = new Whitewalker("WW", player.getCurrentTile());
+			game.addActor("WhiteWalker" + i, ww);
+			ww.addStatusListener(statusTextArea);
 		}
 
 	    game.turnManager.addUpdateListener(statusTextArea);

@@ -1,6 +1,8 @@
 package explorationgame;
 
 import java.awt.Color;
+import java.util.ArrayList;
+
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
@@ -26,10 +28,10 @@ class Player extends Actor {
 	final int maxWounds = 15;
 	final int maxTurnMoves = 4;
 	
-	final Terrain[] impassableTerrain = {
-			new ImpassableMountainsTerrain(),
-			new OceanTerrain()
-			};
+//	final Terrain[] impassableTerrain = {
+//			new ImpassableMountainsTerrain(),
+//			new OceanTerrain()
+//			};
 		
 	ImageIcon icon;
 	
@@ -66,6 +68,9 @@ class Player extends Actor {
 	}
 
 	public Player() {
+		impassableTerrain = new ArrayList<>(0);
+		impassableTerrain.add(new ImpassableMountainsTerrain());
+		impassableTerrain.add(new OceanTerrain());
 		hunger = 0;
 		thirst = 0;
 		wounds = 0;
@@ -186,15 +191,6 @@ class Player extends Actor {
 		return super.checkLegalMove(tile);
 	}
 	
-	public boolean checkPassableTile(Tile tile) {
-		for (Terrain t : impassableTerrain) {
-			if (t.getClass().equals(tile.terrain.getClass())) {
-				System.out.println("Impassable terrain!\n");
-				return false;
-			}
-		}
-		return true;
-	}
 	
 	@Override
 	void move(Tile targetTile) {		

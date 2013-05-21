@@ -28,8 +28,8 @@ public class TurnManager {
 			for (TurnUpdateListener l : updateListeners) {
 				l.nextActorTurn(nextActor);
 			}
-			nextActor.beginTurn();
 			System.out.println("Next actor: " + nextActor.getGameID());
+			nextActor.beginTurn();
 		} else {
 			manageTurn();
 		}

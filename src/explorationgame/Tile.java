@@ -33,4 +33,11 @@ class Tile extends JLabel {
 						"<br><b>Wounds: </b>" + terrain.getWounds() +
 						"<br><b>Cost to move: </b>" + terrain.getMoveCost());
 		}
+	
+	@Override
+	public String toString() {
+		return "[" + row + "; " + col + "] " + terrain;
+		
+	}
+	
 }

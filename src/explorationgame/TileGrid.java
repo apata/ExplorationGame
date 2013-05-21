@@ -4,7 +4,7 @@ import java.awt.Dimension;
 import java.awt.GridLayout;
 import javax.swing.*;
 
-import org.jgraph.graph.DefaultEdge;
+import org.jgrapht.graph.DefaultEdge;
 import org.jgrapht.graph.SimpleGraph;
  
 
@@ -84,6 +84,7 @@ class TileGrid extends JPanel {
 				
 				//add(tile);
 				tiles[row][col] = tile;
+				tileGraph.addVertex(tile);
 			}
 		}
 
@@ -91,13 +92,13 @@ class TileGrid extends JPanel {
 		for (Tile[] row : tiles) {
 			for (Tile tile : row) {
 				add(tile);
-				tileGraph.addVertex(tile);
 				
 				for (int i = -1; i < 2; i++) {
 					for (int j = -1; i < 2; i++) {
 						try {
 							tileGraph.addEdge(tile, getTile(tile.row - i, tile.col - j));
 						} catch (Exception e) {
+							e.printStackTrace();
 							continue;
 						}
 					}

@@ -24,6 +24,7 @@ public abstract class Actor implements Serializable{
 	private Game game;
 	
 	List<ActorStatusListener> statusListeners = new ArrayList<ActorStatusListener>();
+	List<Terrain> impassableTerrain; 
 	
 	public String getName() {
 		return name;
@@ -104,6 +105,16 @@ public abstract class Actor implements Serializable{
 		} catch (TileOutOfGameWorldException e) {
 			return null;
 		}
+	}
+	
+	public boolean checkPassableTile(Tile tile) {
+		for (Terrain t : impassableTerrain) {
+			if (t.getClass().equals(tile.terrain.getClass())) {
+				System.out.println("Impassable terrain!\n");
+				return false;
+			}
+		}
+		return true;
 	}
 	
     /**
