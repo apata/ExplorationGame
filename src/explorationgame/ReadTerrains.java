@@ -14,7 +14,6 @@ class ReadTerrains {
 				new PlainsTerrain(), 
 				new MountainsTerrain(), 
 				new ForestTerrain(),
-				new OceanTerrain()
 		};
 		
 		return tbd;

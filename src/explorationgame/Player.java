@@ -27,7 +27,7 @@ class Player extends Actor {
 	final int maxTurnMoves = 4;
 	
 	final Terrain[] impassableTerrain = {
-			new MountainsTerrain(),
+			new ImpassableMountainsTerrain(),
 			new OceanTerrain()
 			};
 		

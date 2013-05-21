@@ -53,7 +53,16 @@ class TileGrid extends JPanel {
 		
 		for (int row = 0; row < tiles.length; row++) {
 			for (int col = 0; col < tiles[row].length; col++) {
-				Tile tile = new Tile(ts.next());
+				Tile tile = null;
+				if (col == 0 || col == tiles.length - 1) {
+					tile = new Tile(new OceanTerrain());
+				}
+				else if (row == 0) {
+					tile = new Tile(new ImpassableMountainsTerrain());
+				}
+				else {
+					tile = new Tile(ts.next());
+				}
 				tile.row = row;
 				tile.col = col;
 				tile.visited = 0;
@@ -61,8 +70,32 @@ class TileGrid extends JPanel {
 				tile.setToolTipText(text + "<br><b>Coordinates: </b>" + row + ", " + col);
 				//tile.addMouseListener(gridMouseListener);
 				tile.setPreferredSize(tilePrefSize);
-				add(tile);
+				
+				//add(tile);
 				tiles[row][col] = tile;
+			}
+		}
+//		
+//		for (int row = 0; row < tiles.length; row++) {
+//			for (int col = 0; col < tiles[row].length; col++) {
+//				Tile oldTile = tiles[row][col];
+//				Tile tile = new Tile(new OceanTerrain());
+//				tile.row = row;
+//				tile.col = col;
+//				tile.visited = 0;		
+//				if (row == 0 || row == tiles.length - 1 || col == 0 || col == tiles.length - 1) {
+//					String text = tile.getToolTipText();
+//					tile.setToolTipText(text + "<br><b>Coordinates: </b>" + row + ", " + col);
+//					tile.setPreferredSize(tilePrefSize);
+//					//add(tile);
+//					tiles[row][col] = tile;
+//				}
+//			}
+//		}
+		
+		for (Tile[] row : tiles) {
+			for (Tile tile : row) {
+				add(tile);
 			}
 		}
 	}

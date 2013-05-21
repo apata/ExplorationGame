@@ -3,22 +3,23 @@ package explorationgame;
 import java.awt.Color;
 
 /**
- * Defines mountain terrain.
  * 
- * @author Artur
+ * Defines the Plains terrain.
+ * 
+ * @author 
  *
  */
 
-public class MountainsTerrain extends Terrain {
+class MountainsTerrain extends Terrain {
 	private static final long serialVersionUID = 1L;
-	
-	public MountainsTerrain() {
+
+	public MountainsTerrain (){
 		setName("Mountains");
-		setColor(new Color(96, 96, 96, 255));
+		setColor(new Color(80, 80, 80, 255));
 		setWeight(10);
-		setHunger(10);
-		setThirst(-5);
-		setWounds(2);
+		setHunger(-5);
+		setThirst(5);
+		setWounds(1);
 		setMoveCost(3);
 	}
 }

@@ -11,6 +11,7 @@ import java.awt.Color;
  */
 
 class OceanTerrain extends Terrain {
+	private static final long serialVersionUID = 1L;
 	
 	public OceanTerrain (){
 		setName("Ocean");
