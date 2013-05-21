@@ -4,7 +4,7 @@ import java.awt.Color;
 
 /**
  * 
- * Defines the Forest terrain.
+ * Defines the Ocean terrain.
  * 
  * @author 
  *

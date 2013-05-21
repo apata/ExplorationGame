@@ -4,7 +4,7 @@ import java.awt.Color;
 
 /**
  * 
- * Defines the Plains terrain.
+ * Defines the Mountains terrain.
  * 
  * @author 
  *

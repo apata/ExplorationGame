@@ -3,7 +3,7 @@ package explorationgame;
 import java.awt.Color;
 
 /**
- * Defines mountain terrain.
+ * Defines the impassable mountains terrain.
  * 
  * @author Artur
  *

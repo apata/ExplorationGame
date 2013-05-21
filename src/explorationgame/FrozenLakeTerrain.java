@@ -4,19 +4,19 @@ import java.awt.Color;
 
 /**
  * 
- * Defines the Tundra terrain.
+ * Defines the Frozen lake terrain.
  * 
  * @author 
  *
  */
 
-class TundraTerrain extends Terrain {
+class FrozenLakeTerrain extends Terrain {
 	private static final long serialVersionUID = 1L;
 
-	public TundraTerrain (){
-		setName("Tundra");
-		setColor(new Color(200, 200, 200, 255));
-		setWeight(30);
+	public FrozenLakeTerrain (){
+		setName("Frozen lake");
+		setColor(new Color(150, 150, 255, 255));
+		setWeight(5);
 		setHunger(5);
 		setThirst(5);
 		setWounds(-1);

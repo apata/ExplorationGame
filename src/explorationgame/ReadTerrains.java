@@ -15,7 +15,9 @@ class ReadTerrains {
 				new MountainsTerrain(), 
 				new ForestTerrain(),
 				new HillsTerrain(),
-				new ImpassableMountainsTerrain()
+				new ImpassableMountainsTerrain(),
+				new FrozenLakeTerrain(),
+				new SnowyForestTerrain()
 		};
 		
 		return tbd;
