@@ -1,5 +1,10 @@
 package explorationgame;
 
+import java.util.List;
+
+import org.jgraph.graph.DefaultEdge;
+import org.jgrapht.alg.DijkstraShortestPath;
+
 public class Whitewalker extends Actor implements ActorStatusListener {
 	private static final long serialVersionUID = 1L;
 	
@@ -7,8 +12,12 @@ public class Whitewalker extends Actor implements ActorStatusListener {
 
 	@Override
 	void beginTurn() {
-		
+		List<DefaultEdge> edgeList = DijkstraShortestPath.findPathBetween(getGame().gameWorld.getTileGraph(), getCurrentTile(), playerLocation);
+		for (DefaultEdge edge : edgeList)  {
+			move((Tile) edge.getTarget());
+		}
 	}
+
 
 	@Override
 	void endTurn() {
@@ -24,7 +33,7 @@ public class Whitewalker extends Actor implements ActorStatusListener {
 
 	@Override
 	void move(Tile tile) {
-		// TODO Auto-generated method stub
+		
 		
 	}
 
