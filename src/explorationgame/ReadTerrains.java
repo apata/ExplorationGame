@@ -11,9 +11,11 @@ class ReadTerrains {
 
 	public static Terrain[] make_terrains() {
 		Terrain[] tbd = {
-				new PlainsTerrain(), 
+				new TundraTerrain(), 
 				new MountainsTerrain(), 
 				new ForestTerrain(),
+				new HillsTerrain(),
+				new ImpassableMountainsTerrain()
 		};
 		
 		return tbd;

@@ -16,8 +16,8 @@ class ForestTerrain extends Terrain {
 	public ForestTerrain (){
 		setName("Forest");
 		setColor(new Color(51, 102, 0, 255));
-		setWeight(50);
-		setHunger(-5);
+		setWeight(30);
+		setHunger(-7);
 		setThirst(5);
 		setWounds(1);
 		setMoveCost(2);

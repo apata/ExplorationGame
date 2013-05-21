@@ -15,11 +15,11 @@ class MountainsTerrain extends Terrain {
 
 	public MountainsTerrain (){
 		setName("Mountains");
-		setColor(new Color(80, 80, 80, 255));
+		setColor(new Color(90, 90, 90, 255));
 		setWeight(10);
-		setHunger(-5);
-		setThirst(5);
-		setWounds(1);
+		setHunger(5);
+		setThirst(-10);
+		setWounds(2);
 		setMoveCost(3);
 	}
 }

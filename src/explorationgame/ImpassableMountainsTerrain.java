@@ -13,12 +13,12 @@ public class ImpassableMountainsTerrain extends Terrain {
 	private static final long serialVersionUID = 1L;
 	
 	public ImpassableMountainsTerrain() {
-		setName("Mountains");
-		setColor(new Color(96, 96, 96, 255));
+		setName("Impassable mountains");
+		setColor(new Color(70, 70, 70, 255));
 		setWeight(10);
-		setHunger(10);
-		setThirst(-5);
-		setWounds(2);
-		setMoveCost(3);
+		setHunger(0);
+		setThirst(0);
+		setWounds(0);
+		setMoveCost(-1);
 	}
 }

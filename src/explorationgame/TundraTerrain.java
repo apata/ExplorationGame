@@ -10,15 +10,15 @@ import java.awt.Color;
  *
  */
 
-class PlainsTerrain extends Terrain {
+class TundraTerrain extends Terrain {
 	private static final long serialVersionUID = 1L;
 
-	public PlainsTerrain (){
-		setName("Plains");
-		setColor(new Color(255, 255, 102, 255));
-		setWeight(10);
-		setHunger(-5);
-		setThirst(0);
+	public TundraTerrain (){
+		setName("Tundra");
+		setColor(new Color(200, 200, 200, 255));
+		setWeight(30);
+		setHunger(5);
+		setThirst(5);
 		setWounds(-1);
 		setMoveCost(1);
 	}
