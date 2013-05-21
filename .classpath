@@ -3,5 +3,35 @@
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="src" path="resources"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.7"/>
+	<classpathentry kind="lib" path="//pohl.ut.ee/apata/OOP/workspace/ExplorationGame/libs/JGraphT/lib/jgraph.jar">
+		<attributes>
+			<attribute name="javadoc_location" value="file:/Z:/OOP/workspace/ExplorationGame/libs/JGraphT/javadoc/"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="//pohl.ut.ee/apata/OOP/workspace/ExplorationGame/libs/JGraphT/lib/junit.jar">
+		<attributes>
+			<attribute name="javadoc_location" value="file:/Z:/OOP/workspace/ExplorationGame/libs/JGraphT/javadoc/"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="//pohl.ut.ee/apata/OOP/workspace/ExplorationGame/libs/JGraphT/lib/svnant.jar">
+		<attributes>
+			<attribute name="javadoc_location" value="file:/Z:/OOP/workspace/ExplorationGame/libs/JGraphT/javadoc/"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="//pohl.ut.ee/apata/OOP/workspace/ExplorationGame/libs/JGraphT/lib/svnClientAdapter.jar">
+		<attributes>
+			<attribute name="javadoc_location" value="file:/Z:/OOP/workspace/ExplorationGame/libs/JGraphT/javadoc/"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="//pohl.ut.ee/apata/OOP/workspace/ExplorationGame/libs/JGraphT/lib/TGGraphLayout.jar">
+		<attributes>
+			<attribute name="javadoc_location" value="file:/Z:/OOP/workspace/ExplorationGame/libs/JGraphT/javadoc/"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="//pohl.ut.ee/apata/OOP/workspace/ExplorationGame/libs/JGraphT/lib/xmlunit1.0.jar">
+		<attributes>
+			<attribute name="javadoc_location" value="file:/Z:/OOP/workspace/ExplorationGame/libs/JGraphT/javadoc/"/>
+		</attributes>
+	</classpathentry>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
