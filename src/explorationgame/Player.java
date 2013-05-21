@@ -3,6 +3,7 @@ package explorationgame;
 import java.awt.Color;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
 
 /**
  * Represents player of game.
@@ -215,6 +216,14 @@ class Player extends Actor {
 			// Sets icon of target tile.
 			targetTile.setIcon(icon);
 			getGame().moveView(targetTile);
+			
+			if (checkDeath()) {
+				setActive(false);
+				getGame().gridDispatcher.setActive(false);
+				getGame().gridMouseListener.setActive(false);
+				JOptionPane.showMessageDialog(null, "You have died.");
+				getGame().close();
+			}
 			
 			if (checkTurnEnd()) {
 				endTurn();

@@ -5,6 +5,7 @@ import java.util.LinkedHashMap;
 
 import javax.swing.InputMap;
 import javax.swing.JComponent;
+import javax.swing.JFrame;
 import javax.swing.JScrollPane;
 import javax.swing.KeyStroke;
 
@@ -70,6 +71,11 @@ public class Game extends JScrollPane {
 		tileBounds.height = viewportBounds.height;
 		
 		((JComponent) gameWorld).scrollRectToVisible(tileBounds);
+	}
+
+	public void close() {
+		((JFrame) this.getTopLevelAncestor()).dispose();
+
 	}
 
 }
