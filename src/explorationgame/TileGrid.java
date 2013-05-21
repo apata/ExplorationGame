@@ -4,6 +4,10 @@ import java.awt.Dimension;
 import java.awt.GridLayout;
 import javax.swing.*;
 
+import org.jgraph.graph.DefaultEdge;
+import org.jgrapht.graph.SimpleGraph;
+ 
+
 /**
  * Creates grid of tiles as an extension of JPanel. 
  * 
@@ -19,6 +23,7 @@ class TileGrid extends JPanel {
 	public static final int default_cell_width = 20;
 	
 	private Tile[][] tiles;
+	private SimpleGraph<Tile, DefaultEdge> tileGraph;
 	
 	public Tile[][] getTiles() {
 		return tiles;
@@ -32,6 +37,10 @@ class TileGrid extends JPanel {
 		}
 	}
 	
+	public SimpleGraph<Tile, DefaultEdge> getTileGraph() {
+		return tileGraph;
+	}
+
 	public TileGrid(TerrainServer ts) {
 		this(default_rows, default_cols, default_cell_width, ts);
 	}
@@ -48,6 +57,8 @@ class TileGrid extends JPanel {
 	
 	public TileGrid(int rows, int cols, int cell_width, TerrainServer ts) {		
 		tiles = new Tile[rows][cols];
+		tileGraph = new SimpleGraph<>(DefaultEdge.class);
+		
 		Dimension tilePrefSize = new Dimension(cell_width, cell_width);
 		setLayout(new GridLayout(rows, cols));
 		
@@ -75,27 +86,22 @@ class TileGrid extends JPanel {
 				tiles[row][col] = tile;
 			}
 		}
-//		
-//		for (int row = 0; row < tiles.length; row++) {
-//			for (int col = 0; col < tiles[row].length; col++) {
-//				Tile oldTile = tiles[row][col];
-//				Tile tile = new Tile(new OceanTerrain());
-//				tile.row = row;
-//				tile.col = col;
-//				tile.visited = 0;		
-//				if (row == 0 || row == tiles.length - 1 || col == 0 || col == tiles.length - 1) {
-//					String text = tile.getToolTipText();
-//					tile.setToolTipText(text + "<br><b>Coordinates: </b>" + row + ", " + col);
-//					tile.setPreferredSize(tilePrefSize);
-//					//add(tile);
-//					tiles[row][col] = tile;
-//				}
-//			}
-//		}
+
 		
 		for (Tile[] row : tiles) {
 			for (Tile tile : row) {
 				add(tile);
+				tileGraph.addVertex(tile);
+				
+				for (int i = -1; i < 2; i++) {
+					for (int j = -1; i < 2; i++) {
+						try {
+							tileGraph.addEdge(tile, getTile(tile.row - i, tile.col - j));
+						} catch (Exception e) {
+							continue;
+						}
+					}
+				}
 			}
 		}
 	}

@@ -33,5 +33,11 @@
 			<attribute name="javadoc_location" value="file:/Z:/OOP/workspace/ExplorationGame/libs/JGraphT/javadoc/"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry kind="lib" path="libs/JGraphT/lib/jgraph.jar"/>
+	<classpathentry kind="lib" path="libs/JGraphT/jgrapht-jdk1.6.jar">
+		<attributes>
+			<attribute name="javadoc_location" value="file:/Z:/OOP/workspace/ExplorationGame/libs/JGraphT/javadoc/"/>
+		</attributes>
+	</classpathentry>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
