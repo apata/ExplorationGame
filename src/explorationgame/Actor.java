@@ -1,5 +1,6 @@
 package explorationgame;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,7 +11,9 @@ import java.util.List;
  *
  */
 
-public abstract class Actor {
+public abstract class Actor implements Serializable{
+	private static final long serialVersionUID = 1L;
+	
 	private String name;
 	private String gameID;
 	private int row;

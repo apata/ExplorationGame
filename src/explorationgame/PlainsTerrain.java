@@ -11,6 +11,7 @@ import java.awt.Color;
  */
 
 class PlainsTerrain extends Terrain {
+	private static final long serialVersionUID = 1L;
 
 	public PlainsTerrain (){
 		setName("Plains");

@@ -4,7 +4,9 @@ import java.awt.Color;
 
 import javax.swing.BorderFactory;
 
+
 public class DummyActor extends Actor {
+	private static final long serialVersionUID = 1L;
 
 	public DummyActor(String name) {
 		setName(name);

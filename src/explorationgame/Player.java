@@ -13,6 +13,8 @@ import javax.swing.JOptionPane;
  */
 
 class Player extends Actor {
+	private static final long serialVersionUID = 1L;
+	
 	private int hunger;
 	private int thirst;
 	private int wounds;

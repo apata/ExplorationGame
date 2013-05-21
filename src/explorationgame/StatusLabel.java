@@ -8,8 +8,10 @@ import javax.swing.JLabel;
  * @author artur
  *
  */
-@SuppressWarnings("serial")
+
 public class StatusLabel extends JLabel implements ActorStatusListener {
+	private static final long serialVersionUID = 1L;
+	
 	int[] max_values;
 	String actor_name;
 	

@@ -9,8 +9,10 @@ import javax.swing.JLabel;
  * @author artur
  *
  */
-@SuppressWarnings("serial")
+
 class Tile extends JLabel {
+	private static final long serialVersionUID = 1L;
+	
 	Terrain terrain;
 	int row;
 	int col;

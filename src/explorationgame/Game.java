@@ -9,8 +9,10 @@ import javax.swing.JFrame;
 import javax.swing.JScrollPane;
 import javax.swing.KeyStroke;
 
-@SuppressWarnings("serial")
+
 public class Game extends JScrollPane {
+	private static final long serialVersionUID = 1L;
+	
 	public TileGrid gameWorld;
 	public TurnManager turnManager;
 	public LinkedHashMap<String, Actor> actors;

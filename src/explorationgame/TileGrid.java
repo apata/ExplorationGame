@@ -11,8 +11,9 @@ import javax.swing.*;
  *
  */
 
-@SuppressWarnings("serial")
 class TileGrid extends JPanel {
+	private static final long serialVersionUID = 1L;
+	
 	public static final int default_rows = 20;
 	public static final int default_cols = 20;
 	public static final int default_cell_width = 20;

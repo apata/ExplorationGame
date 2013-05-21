@@ -12,8 +12,10 @@ import javax.swing.*;
  * @author artur
  *
  */
-@SuppressWarnings("serial")
+
 public class MainMenuFrame extends JPanel implements WindowListener {
+	private static final long serialVersionUID = 1L;
+	
 	public final Dimension menu_window_default_dimension = new Dimension(600, 200);
 	public final String terrain_file_name = "resources\\terrains.xml";
 	

@@ -11,6 +11,7 @@ import java.awt.Color;
  */
 
 class ForestTerrain extends Terrain {
+	private static final long serialVersionUID = 1L;
 	
 	public ForestTerrain (){
 		setName("Forest");

@@ -2,8 +2,9 @@ package explorationgame;
 
 import javax.swing.JTextArea;
 
-@SuppressWarnings("serial")
 public class StatusTextArea extends JTextArea implements ActorStatusListener, TurnUpdateListener {
+	private static final long serialVersionUID = 1L;
+	
 	public StatusTextArea() {
 		super();
 		this.setEditable(false);

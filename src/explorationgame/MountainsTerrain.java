@@ -8,7 +8,9 @@ import java.awt.Color;
  * @author Artur
  *
  */
+
 public class MountainsTerrain extends Terrain {
+	private static final long serialVersionUID = 1L;
 	
 	public MountainsTerrain() {
 		setName("Mountains");

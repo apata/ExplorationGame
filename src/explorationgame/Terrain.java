@@ -1,6 +1,7 @@
 package explorationgame;
 
 import java.awt.Color;
+import java.io.Serializable;
 
 /**
  * 
@@ -9,7 +10,10 @@ import java.awt.Color;
  * @author artur
  *
  */
-abstract class Terrain {
+
+abstract class Terrain implements Serializable {
+	private static final long serialVersionUID = 1L;
+	
 	private String name;
 	private Color color;
 	private int weight;
