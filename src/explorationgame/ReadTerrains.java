@@ -13,7 +13,8 @@ class ReadTerrains {
 		Terrain[] tbd = {
 				new PlainsTerrain(), 
 				new MountainsTerrain(), 
-				new ForestTerrain()
+				new ForestTerrain(),
+				new OceanTerrain()
 		};
 		
 		return tbd;

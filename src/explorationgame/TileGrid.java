@@ -66,6 +66,12 @@ class TileGrid extends JPanel {
 		}
 	}
 	
+	public Tile getRandomTile() {
+		int row = (int) (Math.random() * tiles.length);
+		int col = (int) (Math.random() * tiles[row].length);
+		return tiles[row][col];
+	}
+	
 	
 	/**
 	 * Exits JVM. Called when actor.checkDeath() == true from moveActor(Tile t) function. 
