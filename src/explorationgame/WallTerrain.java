@@ -12,7 +12,7 @@ public class WallTerrain extends Terrain {
 		setHunger(0);
 		setThirst(0);
 		setWounds(0);
-		setMoveCost(0);
+		setMoveCost(-1);
 	}
 
 }

@@ -65,7 +65,7 @@ class TileGrid extends JPanel {
 		for (int row = 0; row < tiles.length; row++) {
 			for (int col = 0; col < tiles[row].length; col++) {
 				Tile tile = null;
-				if (col == 0 || col == tiles.length - 1) {
+				if (col == 0 || col == tiles[row].length - 1) {
 					tile = new Tile(new OceanTerrain());
 				}
 				else if (row == 0) {

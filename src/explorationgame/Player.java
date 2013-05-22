@@ -41,6 +41,9 @@ class Player extends Actor {
 	
 	void setHunger(int hunger) {
 		this.hunger = hunger;
+		if (checkDeath()) {
+			kill();
+		}
 	}
 	
 	int getThirst() {
@@ -49,6 +52,10 @@ class Player extends Actor {
 	
 	void setThirst(int thirst) {
 		this.thirst = thirst;
+		if (checkDeath()) {
+			kill();
+		}
+
 	}
 	
 	int getWounds() {
@@ -57,6 +64,9 @@ class Player extends Actor {
 	
 	void setWounds(int wounds) {
 		this.wounds = wounds;
+		if (checkDeath()) {
+			kill();
+		}
 	}
 		
 	public Player() {
@@ -69,7 +79,7 @@ class Player extends Actor {
 		setPlayerControlled(true);
 		
 		setTurns(0);
-		icon = new ImageIcon("resources\\player.png");
+		icon = new ImageIcon("resources\\spearman.png");
 		
 		setRow(-1);
 		setCol(-1);
@@ -110,6 +120,16 @@ class Player extends Actor {
 		}
 	}
 	
+	private void kill() {
+		getGame().gridDispatcher.setActive(false);
+		getGame().gridMouseListener.setActive(false);
+		if (isActive()) {
+			JOptionPane.showMessageDialog(null, "You have died.");
+		}
+		setActive(false);
+		getGame().close();
+	}
+	
 	public boolean checkTurnEnd() {
 		if (getTurnMoves() <= 0) {
 			return true;
@@ -141,6 +161,7 @@ class Player extends Actor {
 	@Override
 	void beginTurn() {
 		incrementTurns();
+		setActive(true);
 		setTurnMoves(getTurnMoves() + maxTurnMoves);
 		
 		// Passes status to listeners.
@@ -149,8 +170,7 @@ class Player extends Actor {
 			l.actorAtTile(getCurrentTile());
 		}
 
-		
-		// Enables listeners for player input.
+		// Enables player input.
 		getGame().gridDispatcher.setActor(this);
 		getGame().gridMouseListener.setActor(this);
 		getGame().gridDispatcher.setActive(true);
@@ -185,7 +205,7 @@ class Player extends Actor {
 	
 	
 	@Override
-	void move(Tile targetTile) {		
+	boolean move(Tile targetTile) {		
 		Tile currentTile = getCurrentTile();
 		if (checkLegalMove(targetTile)) {
 			// Removes player icon from current tile.
@@ -218,28 +238,25 @@ class Player extends Actor {
 			// Sets icon of target tile.
 			targetTile.setIcon(icon);
 			getGame().moveView(targetTile);
-			
-			if (checkDeath()) {
-				setActive(false);
-				getGame().gridDispatcher.setActive(false);
-				getGame().gridMouseListener.setActive(false);
-				JOptionPane.showMessageDialog(null, "You have died.");
-				getGame().close();
-			}
-			
+						
 			if (checkTurnEnd()) {
 				endTurn();
 			}
+			
+			return true;
+		} else {
+			return false;
 		}
 	}
 
 	@Override
-	void move(int row, int col) {
+	boolean move(int row, int col) {
 		try {
 			Tile targetTile = getGame().gameWorld.getTile(row, col);
-			move(targetTile);
+			return move(targetTile);
 		} catch (TileOutOfGameWorldException e) {
 			System.out.println("Target tile is out of gameworld. Move not possible.");
+			return false;
 		}
 	}		
 	

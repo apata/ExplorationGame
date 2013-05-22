@@ -12,12 +12,14 @@ import org.jgrapht.alg.DijkstraShortestPath;
 public class Whitewalker extends Actor implements ActorStatusListener {
 	private static final long serialVersionUID = 1L;
 	
-	private Tile playerLocation;
+//	private Tile playerLocation;
+	private Player player;
+	
 	ImageIcon icon;
 	
 	final int maxTurnMoves = 24;
 	
-	public Whitewalker(String name, Tile playerTile) {
+	public Whitewalker(String name, Player player) {
 		
 		impassableTerrain = new ArrayList<>(0);
 		impassableTerrain.add(new ImpassableMountainsTerrain());
@@ -26,11 +28,10 @@ public class Whitewalker extends Actor implements ActorStatusListener {
 		
 		setName(name);
 		setPlayerControlled(false);
-		setTurns(0);
 		setRow(-1);
 		setCol(-1);
 		icon = new ImageIcon("resources\\fallenbrother2.png");
-		playerLocation = playerTile;
+		this.player = player;
 	}
 
 
@@ -42,10 +43,15 @@ public class Whitewalker extends Actor implements ActorStatusListener {
 		}
 		
 		SimpleDirectedWeightedGraph<Tile, DefaultWeightedEdge> tileGraph = getGame().gameWorld.getTileGraph();
-		List<DefaultWeightedEdge> edgeList = DijkstraShortestPath.findPathBetween(tileGraph, getCurrentTile(), playerLocation);
+		List<DefaultWeightedEdge> edgeList = DijkstraShortestPath.findPathBetween(tileGraph, getCurrentTile(), player.getCurrentTile());
 		if (edgeList != null) {
 			for (DefaultWeightedEdge edge : edgeList)  {
 				System.out.println(tileGraph.getEdgeSource(edge));
+				if (move(tileGraph.getEdgeTarget(edge)) == true) {
+					continue;
+				} else {
+					break;
+				}
 			}
 		}
 		
@@ -74,16 +80,47 @@ public class Whitewalker extends Actor implements ActorStatusListener {
 	}
 
 	@Override
-	void move(int row, int col) {
+	boolean move(int row, int col) {
+		return false;
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	void move(Tile tile) {
-		setTurnMoves(getTurnMoves() - tile.terrain.getMoveCost() * 3); 
+	boolean move(Tile targetTile) {
+		Tile currentTile = getCurrentTile();
+		if (checkLegalMove(targetTile)) {
+			currentTile.setIcon(null);
+			
+			setLocation(targetTile.row, targetTile.col);
+			targetTile = getCurrentTile();
+			
+			setTurnMoves(getTurnMoves() - targetTile.terrain.getMoveCost() * 3);
+			
+			if (targetTile == player.getCurrentTile()) {
+				attack(player);
+				return false;
+			} else {
+				targetTile.setIcon(icon);
+				return true;
+			}
+		}
+		return false;
+		
 	}
-
+	
+	public void attack(Player player) {
+		player.setWounds(player.getWounds() + 5);
+		for (ActorStatusListener l : statusListeners) {
+			l.pushText("Three horns interrupt your fitful sleep. White walkers!\n");
+			l.pushText("Only thanks to the indomitable will of your men,\n" +
+					"you manage to prevail against the ice-cold bastards.\n");
+		}
+		
+		setLocation(-1, -1);
+		placeMe();
+	}
+	
 	@Override
 	void placeMe() {
 		if (getRow() == -1 && getCol() == -1) {
@@ -106,7 +143,7 @@ public class Whitewalker extends Actor implements ActorStatusListener {
 
 	private boolean checkLegalSpawnTile(Tile tile) {
 		if (checkPassableTile(tile)) {
-			if (playerLocation.equals(tile)) {
+			if (player.getCurrentTile().equals(tile)) {
 				System.out.println("Player at spawn.");
 				return false;
 			} else { 
@@ -125,9 +162,8 @@ public class Whitewalker extends Actor implements ActorStatusListener {
 
 	@Override
 	public void actorAtTile(Tile tile) {
-		this.playerLocation = tile;
-		if (playerLocation == getCurrentTile()) {
-			System.out.println("A terrible white walker appears.");
+		if (player.getCurrentTile() == getCurrentTile()) {
+			attack(player);
 		}
 		
 	}

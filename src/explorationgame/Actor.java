@@ -166,8 +166,8 @@ public abstract class Actor implements Serializable{
 	abstract void beginTurn();
 	abstract void endTurn();
 	
-	abstract void move(int row, int col);
-	abstract void move(Tile tile);
+	abstract boolean move(int row, int col);
+	abstract boolean move(Tile tile);
 	
 	/**
 	 * Places actor on TileGrid. Now used for initializing new game 

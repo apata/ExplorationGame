@@ -66,7 +66,7 @@ public class GameFactory {
 	    
 	    // Adds White Walkers to game.
 	    for (int i = 0; i < 4; i++) {
-	    	Whitewalker ww = new Whitewalker("WW", player.getCurrentTile());
+	    	Whitewalker ww = new Whitewalker("WW", player);
 			game.addActor("WhiteWalker" + i, ww);
 			ww.addStatusListener(statusTextArea);
 		}
