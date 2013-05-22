@@ -13,7 +13,7 @@ public class Highscore implements Serializable, Comparable<Highscore>{
 	final static String filepath = "resources\\highscore.dat";
 	public Highscore(Actor actor) {
 		this.actor = actor;
-		this.score = actor.getMoves() * 100;
+		this.score = actor.getTurns() * 100;
 	}
 	public void writeToFile() throws IOException {
 		if ((new File(filepath)).exists()) {

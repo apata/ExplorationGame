@@ -38,12 +38,12 @@ public class MenuButtonListener implements ActionListener {
 			
 			GameFactory newGameFactory = new GameFactory();
 			
-			JFrame newGameFrame = newGameFactory.createGame(playerName, mainMenuFrame.terrain_file_name, 60, 60, 40);
+			JFrame newGameFrame = newGameFactory.createGame(playerName, mainMenuFrame.terrain_file_name, 60, 40, 30);
 			newGameFrame.addWindowListener(mainMenuFrame);
 			
 		} else if (e.getSource().equals(mainMenuFrame.creditsButton)) {
 			System.out.println("Credits.");
-			JOptionPane.showMessageDialog(null,"This program was coded by Artur Pata, Lauri Kongas and Markus Loide in April / May 2013.","Credits",JOptionPane.PLAIN_MESSAGE);
+			JOptionPane.showMessageDialog(null, "This program was coded by Artur Pata, Lauri Kongas and Markus Loide in April / May 2013.","Credits",JOptionPane.PLAIN_MESSAGE);
 			//
 		} else if (e.getSource().equals(mainMenuFrame.exitButton)) {
 			System.out.println("Exit.");

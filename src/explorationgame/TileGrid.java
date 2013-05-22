@@ -4,8 +4,8 @@ import java.awt.Dimension;
 import java.awt.GridLayout;
 import javax.swing.*;
 
-import org.jgrapht.graph.DefaultEdge;
-import org.jgrapht.graph.SimpleGraph;
+import org.jgrapht.graph.DefaultWeightedEdge;
+import org.jgrapht.graph.SimpleDirectedWeightedGraph;
  
 
 /**
@@ -23,7 +23,7 @@ class TileGrid extends JPanel {
 	public static final int default_cell_width = 20;
 	
 	private Tile[][] tiles;
-	private SimpleGraph<Tile, DefaultEdge> tileGraph;
+	private SimpleDirectedWeightedGraph<Tile, DefaultWeightedEdge> tileGraph;
 	
 	public Tile[][] getTiles() {
 		return tiles;
@@ -37,7 +37,7 @@ class TileGrid extends JPanel {
 		}
 	}
 	
-	public SimpleGraph<Tile, DefaultEdge> getTileGraph() {
+	public SimpleDirectedWeightedGraph<Tile, DefaultWeightedEdge> getTileGraph() {
 		return tileGraph;
 	}
 
@@ -57,7 +57,7 @@ class TileGrid extends JPanel {
 	
 	public TileGrid(int rows, int cols, int cell_width, TerrainServer ts) {		
 		tiles = new Tile[rows][cols];
-		tileGraph = new SimpleGraph<>(DefaultEdge.class);
+		tileGraph = new SimpleDirectedWeightedGraph<>(DefaultWeightedEdge.class);
 		
 		Dimension tilePrefSize = new Dimension(cell_width, cell_width);
 		setLayout(new GridLayout(rows, cols));
@@ -71,6 +71,10 @@ class TileGrid extends JPanel {
 				else if (row == 0) {
 					tile = new Tile(new ImpassableMountainsTerrain());
 				}
+				else if (row == tiles.length - 1) {
+					tile = new Tile(new WallTerrain());
+				}
+
 				else {
 					tile = new Tile(ts.next());
 				}
@@ -90,15 +94,19 @@ class TileGrid extends JPanel {
 
 		
 		for (Tile[] row : tiles) {
-			for (Tile tile : row) {
-				add(tile);
-				
+			for (Tile sourceTile : row) {
+				add(sourceTile);
 				for (int i = -1; i < 2; i++) {
-					for (int j = -1; i < 2; i++) {
+					for (int j = -1; j < 2; j++) {
 						try {
-							tileGraph.addEdge(tile, getTile(tile.row - i, tile.col - j));
+							Tile targetTile = getTile(sourceTile.row + i, sourceTile.col + j);
+							if (sourceTile.terrain.getMoveCost() == -1 || targetTile.terrain.getMoveCost() == -1) {
+								continue;
+							}
+							DefaultWeightedEdge e = tileGraph.addEdge(sourceTile, targetTile);
+							tileGraph.setEdgeWeight(e, targetTile.terrain.getMoveCost());
 						} catch (Exception e) {
-							e.printStackTrace();
+							//e.printStackTrace();
 							continue;
 						}
 					}

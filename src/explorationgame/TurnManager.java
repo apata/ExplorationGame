@@ -28,7 +28,7 @@ public class TurnManager {
 			for (TurnUpdateListener l : updateListeners) {
 				l.nextActorTurn(nextActor);
 			}
-			System.out.println("Next actor: " + nextActor.getGameID());
+			System.out.println("Next actor: " + nextActor.getGameID() + " at " + nextActor.getCurrentTile());
 			nextActor.beginTurn();
 		} else {
 			manageTurn();

@@ -23,7 +23,7 @@ public class StatusLabel extends JLabel implements ActorStatusListener {
 				") | Thirst = " + player.getThirst() + " (max: " + max_values[1] + 
 				") | Wounds = " + player.getWounds() + " (max: " + max_values[2] + 
 				") | Moves left = " + player.getTurnMoves() + 
-				" | Turns = " + player.getMoves());
+				" | Turns = " + player.getTurns());
 	}
 	
 	@Override

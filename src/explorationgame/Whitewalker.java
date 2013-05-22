@@ -5,8 +5,8 @@ import java.util.List;
 
 import javax.swing.ImageIcon;
 
-import org.jgrapht.graph.DefaultEdge;
-import org.jgrapht.graph.SimpleGraph;
+import org.jgrapht.graph.DefaultWeightedEdge;
+import org.jgrapht.graph.SimpleDirectedWeightedGraph;
 import org.jgrapht.alg.DijkstraShortestPath;
 
 public class Whitewalker extends Actor implements ActorStatusListener {
@@ -15,13 +15,18 @@ public class Whitewalker extends Actor implements ActorStatusListener {
 	private Tile playerLocation;
 	ImageIcon icon;
 	
+	final int maxTurnMoves = 24;
+	
 	public Whitewalker(String name, Tile playerTile) {
+		
 		impassableTerrain = new ArrayList<>(0);
 		impassableTerrain.add(new ImpassableMountainsTerrain());
 		impassableTerrain.add(new OceanTerrain());
+		impassableTerrain.add(new WallTerrain());
+		
 		setName(name);
 		setPlayerControlled(false);
-		setMoves(0);
+		setTurns(0);
 		setRow(-1);
 		setCol(-1);
 		icon = new ImageIcon("resources\\fallenbrother2.png");
@@ -31,14 +36,15 @@ public class Whitewalker extends Actor implements ActorStatusListener {
 
 	@Override
 	void beginTurn() {
+		setTurnMoves(maxTurnMoves);
 		for (ActorStatusListener l : statusListeners) {
 			l.pushText(getGameID() + " active!\n");
 		}
 		
-		SimpleGraph<Tile, DefaultEdge> tileGraph = getGame().gameWorld.getTileGraph();
-		List<DefaultEdge> edgeList = DijkstraShortestPath.findPathBetween(tileGraph, getCurrentTile(), playerLocation);
+		SimpleDirectedWeightedGraph<Tile, DefaultWeightedEdge> tileGraph = getGame().gameWorld.getTileGraph();
+		List<DefaultWeightedEdge> edgeList = DijkstraShortestPath.findPathBetween(tileGraph, getCurrentTile(), playerLocation);
 		if (edgeList != null) {
-			for (DefaultEdge edge : edgeList)  {
+			for (DefaultWeightedEdge edge : edgeList)  {
 				System.out.println(tileGraph.getEdgeSource(edge));
 			}
 		}
@@ -54,6 +60,19 @@ public class Whitewalker extends Actor implements ActorStatusListener {
 		
 	}
 
+	public boolean checkLegalMove(Tile tile) {
+		for (Terrain t : impassableTerrain) {
+			if (t.getClass().equals(tile.terrain.getClass())) {
+				System.out.println("Impassable terrain!\n");
+				return false;
+			}
+		}
+		if (tile.terrain.getMoveCost() > getTurnMoves()) {
+			return false;
+		}
+		return super.checkLegalMove(tile);
+	}
+
 	@Override
 	void move(int row, int col) {
 		// TODO Auto-generated method stub
@@ -62,8 +81,7 @@ public class Whitewalker extends Actor implements ActorStatusListener {
 
 	@Override
 	void move(Tile tile) {
-		
-		
+		setTurnMoves(getTurnMoves() - tile.terrain.getMoveCost() * 3); 
 	}
 
 	@Override
@@ -108,6 +126,9 @@ public class Whitewalker extends Actor implements ActorStatusListener {
 	@Override
 	public void actorAtTile(Tile tile) {
 		this.playerLocation = tile;
+		if (playerLocation == getCurrentTile()) {
+			System.out.println("A terrible white walker appears.");
+		}
 		
 	}
 

@@ -16,7 +16,7 @@ class OceanTerrain extends Terrain {
 	public OceanTerrain (){
 		setName("Ocean");
 		setColor(new Color(0, 0, 200, 255));
-		setWeight(30);
+		setWeight(0);
 		setHunger(0);
 		setThirst(0);
 		setWounds(0);

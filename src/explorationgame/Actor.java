@@ -18,7 +18,8 @@ public abstract class Actor implements Serializable{
 	private String gameID;
 	private int row;
 	private int col;
-	private int moves;
+	private int turns;
+	private int turnMoves;
 	private boolean playerControlled;
 	private boolean active;
 	private Game game;
@@ -71,16 +72,24 @@ public abstract class Actor implements Serializable{
 		this.col = col;
 	}
 	
-	public int getMoves() {
-		return moves;
+	public int getTurns() {
+		return turns;
 	}
 	
-	public void setMoves(int moves) {
-		this.moves = moves;
+	public void setTurns(int turns) {
+		this.turns = turns;
 	}
 	
-	public void incrMoves() {
-		this.moves += 1;
+	public int getTurnMoves() {
+		return turnMoves;
+	}
+
+	public void setTurnMoves(int turnMoves) {
+		this.turnMoves = turnMoves;
+	}
+
+	public void incrementTurns() {
+		this.turns += 1;
 	}
 	
 	public boolean isPlayerControlled() {

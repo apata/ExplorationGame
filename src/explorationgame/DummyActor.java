@@ -11,7 +11,7 @@ public class DummyActor extends Actor {
 	public DummyActor(String name) {
 		setName(name);
 		setPlayerControlled(false);
-		setMoves(0);
+		setTurns(0);
 		setRow(-1);
 		setCol(-1);
 	}

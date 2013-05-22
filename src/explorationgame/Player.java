@@ -21,12 +21,12 @@ class Player extends Actor {
 	private int thirst;
 	private int wounds;
 	
-	private int turnMoves;
+	
 			
 	final int maxHunger = 50;
 	final int maxThirst = 50;
 	final int maxWounds = 15;
-	final int maxTurnMoves = 4;
+	final int maxTurnMoves = 10;
 	
 //	final Terrain[] impassableTerrain = {
 //			new ImpassableMountainsTerrain(),
@@ -59,14 +59,6 @@ class Player extends Actor {
 		this.wounds = wounds;
 	}
 		
-	public int getTurnMoves() {
-		return turnMoves;
-	}
-
-	public void setTurnMoves(int turnMoves) {
-		this.turnMoves = turnMoves;
-	}
-
 	public Player() {
 		impassableTerrain = new ArrayList<>(0);
 		impassableTerrain.add(new ImpassableMountainsTerrain());
@@ -76,7 +68,7 @@ class Player extends Actor {
 		wounds = 0;
 		setPlayerControlled(true);
 		
-		setMoves(0);
+		setTurns(0);
 		icon = new ImageIcon("resources\\player.png");
 		
 		setRow(-1);
@@ -119,7 +111,7 @@ class Player extends Actor {
 	}
 	
 	public boolean checkTurnEnd() {
-		if (turnMoves <= 0) {
+		if (getTurnMoves() <= 0) {
 			return true;
 		} else {
 			return false;
@@ -142,14 +134,14 @@ class Player extends Actor {
 	 * @return
 	 */
 	public int[] giveStatus() {
-		int[] status = {hunger, thirst, wounds, turnMoves, getMoves()};
+		int[] status = {hunger, thirst, wounds, getTurnMoves(), getTurns()};
 		return status;
 	}
 
 	@Override
 	void beginTurn() {
-		incrMoves();
-		turnMoves += maxTurnMoves;
+		incrementTurns();
+		setTurnMoves(getTurnMoves() + maxTurnMoves);
 		
 		// Passes status to listeners.
 		for (ActorStatusListener l : statusListeners) {
@@ -183,7 +175,7 @@ class Player extends Actor {
 				return false;
 			}
 		}
-		if (tile.terrain.getMoveCost() > turnMoves) {
+		if (tile.terrain.getMoveCost() > getTurnMoves()) {
 			for (ActorStatusListener l : statusListeners) {
 				l.pushText("You push well into the night. The next morning will be harsh!\n");
 			}
@@ -215,7 +207,7 @@ class Player extends Actor {
 			setHunger(Math.max(getHunger() + hunger_increase, 0));
 			setWounds(Math.max(getWounds() + wounds_increase, 0));
 			
-			turnMoves -= targetTile.terrain.getMoveCost();
+			setTurnMoves(getTurnMoves() - targetTile.terrain.getMoveCost());
 
 			// Passes status change event to listeners.
 			for (ActorStatusListener l : statusListeners) {
