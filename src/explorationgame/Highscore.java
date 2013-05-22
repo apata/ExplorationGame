@@ -40,7 +40,7 @@ public class Highscore implements Serializable, Comparable<Highscore>{
 				hslist.add((Highscore) ois.readObject());
 			}
 			catch (Exception e){
-				e.printStackTrace();
+			//	e.printStackTrace();
 				break;
 			}
 		}

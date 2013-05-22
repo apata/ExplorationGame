@@ -22,6 +22,7 @@ public class MainMenuFrame extends JPanel implements WindowListener {
 	JButton newGameButton;
 	JButton creditsButton;
 	JButton exitButton;
+	JButton highScoreButton;
 	
 	/** 
 	 * Creates main menu panel, adds button objects. Ties MenuButtonListener to panel 
@@ -31,13 +32,16 @@ public class MainMenuFrame extends JPanel implements WindowListener {
 	 * @param dim
 	 */
 	public MainMenuFrame(Dimension dim) {
-		setLayout(new GridLayout(3, 1));
+		setLayout(new GridLayout(4, 1));
 		//
 		
 		MenuButtonListener menuButtonListener = new MenuButtonListener(this);
 		
 		newGameButton = new JButton("New game");
 		newGameButton.setPreferredSize(dim);
+		
+		highScoreButton = new JButton("High scores");
+		highScoreButton.setPreferredSize(dim);
 		
 		creditsButton = new JButton("Credits");
 		creditsButton.setPreferredSize(dim);
@@ -46,10 +50,12 @@ public class MainMenuFrame extends JPanel implements WindowListener {
 		exitButton.setPreferredSize(dim);
 		
 		newGameButton.addActionListener(menuButtonListener);
+		highScoreButton.addActionListener(menuButtonListener);
 		creditsButton.addActionListener(menuButtonListener);
 		exitButton.addActionListener(menuButtonListener);
 		
 		add(newGameButton);
+		add(highScoreButton);
 		add(creditsButton);
 		add(exitButton);
 		
