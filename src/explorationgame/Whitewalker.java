@@ -39,7 +39,7 @@ public class Whitewalker extends Actor implements ActorStatusListener {
 	void beginTurn() {
 		setTurnMoves(maxTurnMoves);
 		for (ActorStatusListener l : statusListeners) {
-			l.pushText(getGameID() + " active!\n");
+			l.pushText("A white walker shambles somewhere in the night.\n");
 		}
 		
 		SimpleDirectedWeightedGraph<Tile, DefaultWeightedEdge> tileGraph = getGame().gameWorld.getTileGraph();

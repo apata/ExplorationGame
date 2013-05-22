@@ -25,6 +25,6 @@ class MountainsTerrain extends Terrain {
 
 	@Override
 	public String flavorText() {
-		return "Only a fool would try and scale the mountain passes in such conditions. Unfortunately, you have little choice.\n";
+		return "Only a fool would try and scale the mountain passes in such conditions. Unfortunately, you have little choice in the matter.\n";
 	}
 }

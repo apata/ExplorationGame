@@ -198,7 +198,7 @@ class Player extends Actor {
 		getGame().gridMouseListener.setActive(false);
 		
 		for (ActorStatusListener l : statusListeners) {
-			l.pushText("Darkness engulfs the primal landscape.");
+			l.pushText("Darkness engulfs the primal landscape.\n");
 		}
 		
 		// Activates next actor turn.
