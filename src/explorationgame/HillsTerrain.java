@@ -20,6 +20,6 @@ class HillsTerrain extends Terrain {
 		setHunger(-5);
 		setThirst(2);
 		setWounds(1);
-		setMoveCost(2);
+		setMoveCost(4);
 	}
 }

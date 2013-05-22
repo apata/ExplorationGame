@@ -20,6 +20,6 @@ class SnowyForestTerrain extends Terrain {
 		setHunger(5);
 		setThirst(5);
 		setWounds(2);
-		setMoveCost(2);
+		setMoveCost(3);
 	}
 }

@@ -16,10 +16,10 @@ class FrozenLakeTerrain extends Terrain {
 	public FrozenLakeTerrain (){
 		setName("Frozen lake");
 		setColor(new Color(150, 150, 255, 255));
-		setWeight(5);
+		setWeight(2);
 		setHunger(5);
 		setThirst(5);
 		setWounds(-1);
-		setMoveCost(1);
+		setMoveCost(2);
 	}
 }

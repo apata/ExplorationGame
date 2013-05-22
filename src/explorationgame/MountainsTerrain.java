@@ -20,6 +20,6 @@ class MountainsTerrain extends Terrain {
 		setHunger(5);
 		setThirst(-10);
 		setWounds(2);
-		setMoveCost(3);
+		setMoveCost(6);
 	}
 }
