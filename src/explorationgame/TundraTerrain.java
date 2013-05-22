@@ -18,8 +18,13 @@ class TundraTerrain extends Terrain {
 		setColor(new Color(200, 200, 200, 255));
 		setWeight(30);
 		setHunger(5);
-		setThirst(5);
+		setThirst(-5);
 		setWounds(-1);
 		setMoveCost(2);
+	}
+
+	@Override
+	public String flavorText() {
+		return "These frozen marshlands are easy to trudge through, and the water here is pure.\n";
 	}
 }

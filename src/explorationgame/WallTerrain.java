@@ -15,4 +15,10 @@ public class WallTerrain extends Terrain {
 		setMoveCost(-1);
 	}
 
+	@Override
+	public String flavorText() {
+		return "Finally, the Wall is in sight. Your men, despite the hardships and pain, prance around like young boys.\n" +
+				"A horn answers your call, and the gates creak open.\n";
+	}
+
 }

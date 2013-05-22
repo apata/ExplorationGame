@@ -1,11 +1,11 @@
 package explorationgame;
 
 import java.awt.Color;
+import java.io.IOException;
 import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
-import javax.swing.JOptionPane;
 
 /**
  * Represents player of game.
@@ -21,8 +21,6 @@ class Player extends Actor {
 	private int thirst;
 	private int wounds;
 	
-	
-			
 	final int maxHunger = 50;
 	final int maxThirst = 50;
 	final int maxWounds = 25;
@@ -49,7 +47,6 @@ class Player extends Actor {
 		if (checkDeath()) {
 			kill();
 		}
-
 	}
 	
 	int getWounds() {
@@ -117,15 +114,38 @@ class Player extends Actor {
 	private void kill() {
 		getGame().gridDispatcher.setActive(false);
 		getGame().gridMouseListener.setActive(false);
+				
 		if (isActive()) {
-			JOptionPane.showMessageDialog(null, "You have died.");
+			for (ActorStatusListener l : statusListeners) {
+				l.pushText("You have died!\n" +
+						"Close the game window to immortalize your name in the Halls of the Dead.\n");
+			}	
+				
+			try {
+				Player deadPlayer = new Player(getName());
+				deadPlayer.setTurns(getTurns());
+				Highscore hs = new Highscore(deadPlayer);
+				hs.writeToFile();
+			} 
+			catch (IOException e) {
+				System.out.println("Error writing data to file: " + e);
+			}
 		}
+	
 		setActive(false);
-		getGame().close();
+//		getGame().close();
 	}
 	
 	public boolean checkTurnEnd() {
 		if (getTurnMoves() <= 0) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+	public boolean checkVictory() {
+		if (getCurrentTile().getClass().equals(new WallTerrain().getClass())) {
 			return true;
 		} else {
 			return false;
@@ -177,6 +197,10 @@ class Player extends Actor {
 		getGame().gridDispatcher.setActive(false);
 		getGame().gridMouseListener.setActive(false);
 		
+		for (ActorStatusListener l : statusListeners) {
+			l.pushText("Darkness engulfs the primal landscape.");
+		}
+		
 		// Activates next actor turn.
 		getGame().turnManager.nextActorTurn();
 	}
@@ -226,21 +250,53 @@ class Player extends Actor {
 			// Passes status change event to listeners.
 			for (ActorStatusListener l : statusListeners) {
 				l.statusUpdated(giveStatus());
-				l.actorAtTile(currentTile);
+				l.actorAtTile(targetTile);
 			}
 			
 			// Sets icon of target tile.
 			targetTile.setIcon(icon);
 			getGame().moveView(targetTile);
-						
+			
+			if (checkVictory()) {
+				win();
+				return true;
+			}
+			
 			if (checkTurnEnd()) {
 				endTurn();
-			}
+				return true;
+			}	
 			
 			return true;
 		} else {
 			return false;
 		}
+	}
+
+	private void win() {
+		getGame().gridDispatcher.setActor(null);
+		getGame().gridMouseListener.setActor(null);
+		getGame().gridDispatcher.setActive(false);
+		getGame().gridMouseListener.setActive(false);
+				
+		if (isActive()) {
+			for (ActorStatusListener l : statusListeners) {
+				l.pushText("You have finally reached the Wall! Congratulations! \n" +
+						"Close the game window to immortalize your name in the Great Hall.\n");
+			}	
+				
+			try {
+				Player victoryPlayer = new Player(getName());
+				victoryPlayer.setTurns(getTurns() + 50);
+				Highscore hs = new Highscore(victoryPlayer);
+				hs.writeToFile();
+			} 
+			catch (IOException e) {
+				System.out.println("Error writing data to file: " + e);
+			}
+		}
+	
+		setActive(false);
 	}
 
 	@Override
@@ -266,6 +322,10 @@ class Player extends Actor {
 			Tile startTile = null;
 			while (true) {
 				startTile = getGame().gameWorld.getRandomTile();
+				if (startTile.row >= getGame().gameWorld.getTiles().length - 10) {
+					continue;
+				}
+				
 				if (checkPassableTile(startTile)) {
 					break;
 				}

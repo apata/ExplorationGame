@@ -22,4 +22,9 @@ class SnowyForestTerrain extends Terrain {
 		setWounds(2);
 		setMoveCost(3);
 	}
+
+	@Override
+	public String flavorText() {
+		return "To become lost in these pure white snowy woods would grant the ultimate mercy. Progress is slow.\n";
+	}
 }

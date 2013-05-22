@@ -22,4 +22,9 @@ class FrozenLakeTerrain extends Terrain {
 		setWounds(-1);
 		setMoveCost(2);
 	}
+
+	@Override
+	public String flavorText() {
+		return "Stepping onto the frozen lake holds no fear for you, for beyond the Wall, a strong shield of ice is ever present.\n";
+	}
 }

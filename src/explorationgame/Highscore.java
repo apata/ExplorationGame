@@ -5,7 +5,7 @@ import java.util.Collections;
 
 
 
-public class Highscore implements Serializable, Comparable<Highscore>{
+public class Highscore implements Serializable, Comparable<Highscore> {
 	private static final long serialVersionUID = 1L;
 	
 	protected Actor actor ;
@@ -47,7 +47,7 @@ public class Highscore implements Serializable, Comparable<Highscore>{
 			try {
 				hslist.add((Highscore) ois.readObject());
 			}
-			catch (Exception e){
+			catch (Exception e) {
 			//	e.printStackTrace();
 				break;
 			}
@@ -67,6 +67,7 @@ public class Highscore implements Serializable, Comparable<Highscore>{
 	public String toString() {
 		return actor.getName() + " : " + score ;
 	}
+	
 	@Override
 	public int compareTo(Highscore o) {
 		if (this.score > o.score) {
@@ -85,7 +86,7 @@ public class Highscore implements Serializable, Comparable<Highscore>{
     		if(file.delete()){
     			System.out.println(file.getName() + " is deleted!");
     		}else{
-    			System.out.println("Delete operation is failed.");
+    			System.out.println("Delete operation failed.");
     		}
     	}
 		catch(Exception e){

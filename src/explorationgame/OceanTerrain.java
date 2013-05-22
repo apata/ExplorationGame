@@ -22,4 +22,9 @@ class OceanTerrain extends Terrain {
 		setWounds(0);
 		setMoveCost(-1);
 	}
+
+	@Override
+	public String flavorText() {
+		return "Cold waves lap these icy shores, and no man without a caravel may transverse it.\n";
+	}
 }

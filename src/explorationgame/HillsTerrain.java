@@ -22,4 +22,9 @@ class HillsTerrain extends Terrain {
 		setWounds(1);
 		setMoveCost(4);
 	}
+
+	@Override
+	public String flavorText() {
+		return "The rolling hills are a pain to trudge through, and hold little of note.\n";
+	}
 }

@@ -1,9 +1,12 @@
 package explorationgame;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-public class TurnManager {
+public class TurnManager implements Serializable {
+	private static final long serialVersionUID = 1L;
+	
 	private Game game;
 	public Iterator<Actor> turnOrder;
 	private ArrayList<TurnUpdateListener> updateListeners;

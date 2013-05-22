@@ -11,7 +11,7 @@ import java.util.List;
  *
  */
 
-public abstract class Actor implements Serializable{
+public abstract class Actor implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	private String name;

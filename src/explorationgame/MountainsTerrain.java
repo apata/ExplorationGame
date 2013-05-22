@@ -22,4 +22,9 @@ class MountainsTerrain extends Terrain {
 		setWounds(2);
 		setMoveCost(6);
 	}
+
+	@Override
+	public String flavorText() {
+		return "Only a fool would try and scale the mountain passes in such conditions. Unfortunately, you have little choice.\n";
+	}
 }

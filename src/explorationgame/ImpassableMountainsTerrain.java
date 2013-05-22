@@ -21,4 +21,9 @@ public class ImpassableMountainsTerrain extends Terrain {
 		setWounds(0);
 		setMoveCost(-1);
 	}
+
+	@Override
+	public String flavorText() {
+		return "These mountains are as tall as you've ever seen, essentially impassable.\n";
+	}
 }

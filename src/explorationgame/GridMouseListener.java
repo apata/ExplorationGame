@@ -2,6 +2,7 @@ package explorationgame;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.Serializable;
 
 /**
  * Defines MouseListener that wraps around TileGrid.
@@ -9,7 +10,9 @@ import java.awt.event.MouseEvent;
  * @author artur
  *
  */
-public class GridMouseListener extends MouseAdapter {
+public class GridMouseListener extends MouseAdapter implements Serializable {
+	private static final long serialVersionUID = 1L;
+
 	private Actor actor;
 	private boolean active;
 	

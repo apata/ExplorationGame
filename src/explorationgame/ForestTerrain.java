@@ -22,4 +22,9 @@ class ForestTerrain extends Terrain {
 		setWounds(1);
 		setMoveCost(3);
 	}
+
+	@Override
+	public String flavorText() {
+		return "Progress through the icy forest is slow, but at least there are some squirrels to eat.\n";
+	}
 }

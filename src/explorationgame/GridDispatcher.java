@@ -3,8 +3,11 @@ package explorationgame;
 import java.awt.KeyEventDispatcher;
 import java.awt.KeyboardFocusManager;
 import java.awt.event.KeyEvent;
+import java.io.Serializable;
 
-public class GridDispatcher implements KeyEventDispatcher {
+public class GridDispatcher implements KeyEventDispatcher, Serializable {
+	private static final long serialVersionUID = 1L;
+	
 	private Actor actor;
 	private boolean active;
 	

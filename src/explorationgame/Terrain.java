@@ -83,4 +83,6 @@ abstract class Terrain implements Serializable {
 	public String toString() {
 		return this.name;
 	}
+	
+	public abstract String flavorText();
 }

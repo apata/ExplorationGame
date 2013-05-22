@@ -17,7 +17,6 @@ public class MainMenuFrame extends JPanel implements WindowListener {
 	private static final long serialVersionUID = 1L;
 	
 	public final Dimension menu_window_default_dimension = new Dimension(600, 200);
-	public final String terrain_file_name = "resources\\terrains.xml";
 	
 	JButton newGameButton;
 	JButton creditsButton;
@@ -33,7 +32,6 @@ public class MainMenuFrame extends JPanel implements WindowListener {
 	 */
 	public MainMenuFrame(Dimension dim) {
 		setLayout(new GridLayout(4, 1));
-		//
 		
 		MenuButtonListener menuButtonListener = new MenuButtonListener(this);
 		
