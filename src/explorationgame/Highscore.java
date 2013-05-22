@@ -32,9 +32,17 @@ public class Highscore implements Serializable, Comparable<Highscore>{
 		}
 	}
 
-	public static ArrayList<Highscore> readAllHighscores() throws IOException{
-		ObjectInputStream ois = new ObjectInputStream(new FileInputStream(new File(filepath)));
+	public static ArrayList<Highscore> readAllHighscores() {
+		ObjectInputStream ois;
+		try {
+			ois = new ObjectInputStream(new FileInputStream(new File(filepath)));
+		} catch (IOException e1) {
+			System.out.println("Error: " + e1);
+			return null;
+		}
+		
 		ArrayList<Highscore> hslist = new ArrayList<Highscore>();
+		
 		while (true) {
 			try {
 				hslist.add((Highscore) ois.readObject());
@@ -44,7 +52,13 @@ public class Highscore implements Serializable, Comparable<Highscore>{
 				break;
 			}
 		}
-		ois.close();
+		
+		try {
+			ois.close();
+		} catch (IOException e) {
+			System.out.println("Error: " + e);
+		}
+		
 		Collections.sort(hslist);
 		return hslist;
 	}
