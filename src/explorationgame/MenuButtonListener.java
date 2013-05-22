@@ -35,18 +35,16 @@ public class MenuButtonListener implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource().equals(mainMenuFrame.newGameButton)) {
-			/* Creates new game, tries to disable main menu for the while and when the game closes, re-enable main menu.
-			 * So far unsuccessful.
-			 */
-
 			System.out.println("New game.");
 			
 			String playerName = JOptionPane.showInputDialog("Enter player name: ");
-			
-			GameFactory newGameFactory = new GameFactory();
-			
-			JFrame newGameFrame = newGameFactory.createGame(playerName, mainMenuFrame.terrain_file_name, 60, 40, 30);
-			newGameFrame.addWindowListener(mainMenuFrame);
+			if (playerName != null) {
+				JFrame newGameFrame = Game.createGame(playerName, 60, 40, 30);
+				newGameFrame.addWindowListener(mainMenuFrame);
+			} else {
+				System.out.println("Name entry canceled.");
+			}
+						
 		
 		} else if (e.getSource().equals(mainMenuFrame.highScoreButton)) {
 			ArrayList<Highscore> highScores = Highscore.readAllHighscores();

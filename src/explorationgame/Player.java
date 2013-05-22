@@ -25,14 +25,8 @@ class Player extends Actor {
 			
 	final int maxHunger = 50;
 	final int maxThirst = 50;
-	final int maxWounds = 15;
-	final int maxTurnMoves = 10;
-	
-//	final Terrain[] impassableTerrain = {
-//			new ImpassableMountainsTerrain(),
-//			new OceanTerrain()
-//			};
-		
+	final int maxWounds = 25;
+	final int maxTurnMoves = 10;		
 	ImageIcon icon;
 	
 	int getHunger() {
