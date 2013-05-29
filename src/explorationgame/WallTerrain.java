@@ -8,7 +8,7 @@ public class WallTerrain extends Terrain {
 	public WallTerrain() {
 		setName("The Wall");
 		setColor(new Color(40, 205, 175, 255));
-		setWeight(30);
+		setWeight(0);
 		setHunger(0);
 		setThirst(0);
 		setWounds(0);

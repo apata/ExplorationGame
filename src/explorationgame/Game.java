@@ -24,6 +24,8 @@ public class Game extends JScrollPane {
 	public GridMouseListener gridMouseListener;
 	
 	public StartScreen startScreen;
+	public DeathScreen deathScreen;
+	public WinScreen winScreen;
 	
 	public Game(TileGrid tileGrid) {
 		// Attaches game world to game.
@@ -35,8 +37,9 @@ public class Game extends JScrollPane {
 		this.turnManager = new TurnManager(this);
 		
 		// Creates listeners.
-		this.gridMouseListener = new GridMouseListener();
+		this.gridMouseListener = new GridMouseListener(this.gameWorld);
 		this.gridDispatcher = new GridDispatcher();
+		this.gridMouseListener.enable();
 		this.gridDispatcher.enable();
 
 		// Adds mouse listener to each tile of game world.
@@ -100,34 +103,9 @@ public class Game extends JScrollPane {
 		
 		// Sets X button function.
 		gameFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		
-//		class GamePaneListener extends ComponentAdapter {
-//			private Game game;
-//			
-//			GamePaneListener(Game game) {
-//				super();
-//				this.game = game;
-//			}
-//			
-//			@Override
-//			public void componentMoved(ComponentEvent e) {
-//				game.setBounds(((JComponent) e.getSource()).getBounds());				
-//			}
-//
-//			@Override
-//			public void componentResized(ComponentEvent e) {
-//				game.setBounds(((JComponent) e.getSource()).getBounds());				
-//			}
-//		}
-		
+				
 		// Creates game field.
 		Game game = new Game(gameWorld);
-//		JLayeredPane gamePane = new JLayeredPane();
-//		gamePane.addComponentListener(new GamePaneListener(game));
-		//gamePane.setLayout(new GridLayout(1, 1, 0 ,0));
-		//gamePane.setLayout(new BoxLayout(gamePane, BoxLayout.PAGE_AXIS));
-//		game.setBounds(new Rectangle(0, 0, 600, 600));
-//		gamePane.add(game, new Integer(0));
 		GridBagConstraints gamePaneConstraints = new GridBagConstraints();
 		gamePaneConstraints.gridx = 0;
 		gamePaneConstraints.gridy = 0;
@@ -176,21 +154,25 @@ public class Game extends JScrollPane {
 		statusLabelConstraints.weighty = 0.05;
 		statusLabelConstraints.fill = GridBagConstraints.BOTH;
 	
-		// Creates start screen.
+		// Creates screens.
 		game.startScreen = new StartScreen(game);
+		game.deathScreen = new DeathScreen(game);
+		game.winScreen = new WinScreen(game);
 	    
-		GridBagConstraints startScreenConstraints = new GridBagConstraints();
-	    startScreenConstraints.gridx = 0;
-	    startScreenConstraints.gridy = 0;
-	    startScreenConstraints.ipadx = 600;
-	    startScreenConstraints.ipady = 600;
-	    startScreenConstraints.weightx = 1;
-	    startScreenConstraints.weighty = 0.8;
-	    startScreenConstraints.fill = GridBagConstraints.BOTH;
+//		GridBagConstraints startScreenConstraints = new GridBagConstraints();
+//	    startScreenConstraints.gridx = 0;
+//	    startScreenConstraints.gridy = 0;
+//	    startScreenConstraints.ipadx = 600;
+//	    startScreenConstraints.ipady = 600;
+//	    startScreenConstraints.weightx = 1;
+//	    startScreenConstraints.weighty = 0.8;
+//	    startScreenConstraints.fill = GridBagConstraints.BOTH;
 	    
 		// Adds components to game frame content pane.
 	    gameFrame.getContentPane().add(game, gamePaneConstraints, 0);
 	    gameFrame.getContentPane().add(game.startScreen, gamePaneConstraints, 0);
+	    gameFrame.getContentPane().add(game.winScreen, gamePaneConstraints, 0);
+	    gameFrame.getContentPane().add(game.deathScreen, gamePaneConstraints, 0);
 	    gameFrame.getContentPane().add(statusTextPane, statusTextPaneConstraints);
 	    gameFrame.getContentPane().add(statusLabel, statusLabelConstraints);
 	    
@@ -202,7 +184,6 @@ public class Game extends JScrollPane {
 	    game.startScreen.setVisible(true);
 	    gameFrame.setVisible(true);
 	    
-	    	    
 	    return gameFrame;
 	}
 

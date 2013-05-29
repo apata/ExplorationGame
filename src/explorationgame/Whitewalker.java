@@ -114,6 +114,9 @@ public class Whitewalker extends Actor implements ActorStatusListener {
 	
 	public void attack(Player player) {
 		player.setWounds(player.getWounds() + 5);
+		if (player.checkDeath()) {
+			player.kill();
+		}
 		for (ActorStatusListener l : statusListeners) {
 			l.pushText("Three horns interrupt your fitful sleep. White walkers!\n");
 			l.pushText("Only thanks to the indomitable will of your men " +

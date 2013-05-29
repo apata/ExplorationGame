@@ -37,9 +37,6 @@ class Player extends Actor {
 	
 	void setHunger(int hunger) {
 		this.hunger = hunger;
-		if (checkDeath()) {
-			kill();
-		}
 	}
 	
 	int getThirst() {
@@ -48,9 +45,6 @@ class Player extends Actor {
 	
 	void setThirst(int thirst) {
 		this.thirst = thirst;
-		if (checkDeath()) {
-			kill();
-		}
 	}
 	
 	int getWounds() {
@@ -59,9 +53,6 @@ class Player extends Actor {
 	
 	void setWounds(int wounds) {
 		this.wounds = wounds;
-		if (checkDeath()) {
-			kill();
-		}
 	}
 	
 	@Override
@@ -152,7 +143,7 @@ class Player extends Actor {
 	 * @return
 	 */
 	public boolean checkVictory() {
-		if (getCurrentTile().getClass().equals(new WallTerrain().getClass())) {
+		if (getCurrentTile().terrain.getClass().equals(WallTerrain.class)) {
 			return true;
 		} else {
 			return false;
@@ -247,7 +238,6 @@ class Player extends Actor {
 			
 			if (checkVictory()) {
 				win();
-				return true;
 			}
 
 			targetTile.visited += 1;
@@ -256,10 +246,14 @@ class Player extends Actor {
 			int thirst_increase = targetTile.terrain.getThirst() / targetTile.visited;
 			int hunger_increase = targetTile.terrain.getHunger() / targetTile.visited;
 			int wounds_increase = targetTile.terrain.getWounds() / targetTile.visited;
-
+			
 			setThirst(Math.max(getThirst() + thirst_increase, 0));
 			setHunger(Math.max(getHunger() + hunger_increase, 0));
 			setWounds(Math.max(getWounds() + wounds_increase, 0));
+			
+			if (checkDeath()) {
+				kill();
+			}
 			
 			setTurnMoves(getTurnMoves() - targetTile.terrain.getMoveCost());
 
@@ -286,34 +280,7 @@ class Player extends Actor {
 		}
 	}
 
-	private void win() {				
-//		if (isActive()) {
-//			for (ActorStatusListener l : statusListeners) {
-//				l.pushText("You have finally reached the Wall! Congratulations! \n" +
-//						"Close the game window to immortalize your name in the Great Hall.\n");
-//			}	
-//				
-//			try {
-//				Player victoryPlayer = new Player(getName());
-//				victoryPlayer.setTurns(getTurns() + 50);
-//				Highscore hs = new Highscore(victoryPlayer);
-//				hs.writeToFile();
-//			}
-//			catch (IOException e) {
-//				System.out.println("Error writing data to file: " + e);
-//			}
-//		}
-	
-	
-		setActive(false);
-		getGame().gridDispatcher.setActive(false);
-		getGame().gridMouseListener.setActive(false);
-		
-		for (ActorStatusListener l : statusListeners) {
-		l.pushText("You have finally reached the Wall! Congratulations! \n" +
-				"Close the game window to immortalize your name in the Halls.\n");
-		}		
-	
+	public void win() {				
 		try {
 			Player victoryPlayer = new Player(getName());
 			victoryPlayer.setTurns(getTurns() + 50);
@@ -321,18 +288,23 @@ class Player extends Actor {
 			hs.writeToFile();
 		} catch (IOException e) {
 			System.out.println("Error writing data to file: " + e);
-		}
+		}		
+		
+		getGame().gridDispatcher.disable();
+		getGame().gridMouseListener.disable();
+		
+		getGame().winScreen.setVisible(true);
+		
+//		getGame().gridDispatcher.setActive(false);
+//		getGame().gridMouseListener.setActive(false);
+//		
+//		for (ActorStatusListener l : statusListeners) {
+//		l.pushText("You have finally reached the Wall! Congratulations! \n" +
+//				"Close the game window to immortalize your name in the Halls.\n");
+//		}		
 	}
 	
-	private void kill() {
-		setActive(false);
-		getGame().gridDispatcher.setActive(false);
-		getGame().gridMouseListener.setActive(false);
-				
-		for (ActorStatusListener l : statusListeners) {
-			l.pushText("You have died!\n" +
-					"Close the game window to immortalize your name in the Halls of the Dead.\n");
-		}	
+	public void kill() {
 		try {
 			Player deadPlayer = new Player(getName());
 			deadPlayer.setTurns(getTurns());
@@ -342,11 +314,20 @@ class Player extends Actor {
 			System.out.println("Error writing data to file: " + e);
 		}
 		
-	
+		getGame().gridDispatcher.disable();
+		getGame().gridMouseListener.disable();
+
+//		setActive(false);
+//		getGame().gridDispatcher.setActive(false);
+//		getGame().gridMouseListener.setActive(false);			
+		getGame().deathScreen.setVisible(true);
+		
+//		for (ActorStatusListener l : statusListeners) {
+//			l.pushText("You have died!\n" +
+//					"Close the game window to immortalize your name in the Halls of the Dead.\n");
+//		}	
 //		getGame().close();
 	}
-
-
 	
 	/**
 	 * Places player on TileGrid. Now used for initializing new game 

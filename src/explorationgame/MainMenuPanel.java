@@ -70,7 +70,7 @@ public class MainMenuPanel extends JPanel implements WindowListener, ActionListe
 			
 			String playerName = JOptionPane.showInputDialog("Enter player name: ");
 			if (playerName != null) {
-				gameFrame = Game.createGame(playerName, 60, 40, 30);
+				gameFrame = Game.createGame(playerName, 30, 40, 30);
 				gameFrame.addWindowListener(this);
 			} else {
 				System.out.println("Name entry canceled.");

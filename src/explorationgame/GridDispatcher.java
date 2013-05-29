@@ -66,4 +66,10 @@ public class GridDispatcher implements KeyEventDispatcher, Serializable {
         KeyboardFocusManager manager = KeyboardFocusManager.getCurrentKeyboardFocusManager();
         manager.addKeyEventDispatcher(this);
 	}
+	
+	public void disable() {
+        KeyboardFocusManager manager = KeyboardFocusManager.getCurrentKeyboardFocusManager();
+        manager.removeKeyEventDispatcher(this);
+	}
+
 }

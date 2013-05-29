@@ -13,9 +13,10 @@ import java.io.Serializable;
 public class GridMouseListener extends MouseAdapter implements Serializable {
 	private static final long serialVersionUID = 1L;
 
+	private TileGrid gameWorld;
 	private Actor actor;
 	private boolean active;
-	
+		
 	public void setActor(Actor actor) {
 		this.actor = actor;
 	}
@@ -24,8 +25,9 @@ public class GridMouseListener extends MouseAdapter implements Serializable {
 		this.active = active;
 	}
 
-	public GridMouseListener() {
+	public GridMouseListener(TileGrid gameWorld) {
 		super();
+		this.gameWorld = gameWorld;
 	}
 	
 	@Override
@@ -38,4 +40,21 @@ public class GridMouseListener extends MouseAdapter implements Serializable {
 			System.out.println(" Mouse listener inactive. Actor not moved.");
 		}	
 	}
+	
+	public void enable() {
+		for (Tile[] row : gameWorld.getTiles()) {
+			for (Tile t : row) {
+				t.addMouseListener(this);
+			}
+		}
+	}
+	
+	public void disable() {
+		for (Tile[] row : gameWorld.getTiles()) {
+			for (Tile t : row) {
+				t.removeMouseListener(this);
+			}
+		}
+	}
+
 }
