@@ -17,7 +17,7 @@ import javax.swing.*;
  *
  */
 
-public class MainMenuFrame extends JPanel implements WindowListener, ActionListener {
+public class MainMenuPanel extends JPanel implements WindowListener, ActionListener {
 	private static final long serialVersionUID = 1L;
 	
 	public final Dimension menu_window_default_dimension = new Dimension(600, 200);
@@ -28,6 +28,7 @@ public class MainMenuFrame extends JPanel implements WindowListener, ActionListe
 	JButton highScoreButton;
 	JButton highScoreClearButton;
 	
+	private JFrame gameFrame;
 	/** 
 	 * Creates main menu panel, adds button objects. Ties MenuButtonListener to panel 
 	 * and adds listener for each button.
@@ -35,7 +36,7 @@ public class MainMenuFrame extends JPanel implements WindowListener, ActionListe
 	 * @param terrainFileName
 	 * @param dim
 	 */
-	public MainMenuFrame(Dimension dim) {
+	public MainMenuPanel(Dimension dim) {
 		setLayout(new GridLayout(4, 1));
 				
 		newGameButton = new JButton("New game");
@@ -69,8 +70,8 @@ public class MainMenuFrame extends JPanel implements WindowListener, ActionListe
 			
 			String playerName = JOptionPane.showInputDialog("Enter player name: ");
 			if (playerName != null) {
-				JFrame newGameFrame = Game.createGame(playerName, 60, 40, 30);
-				newGameFrame.addWindowListener(this);
+				gameFrame = Game.createGame(playerName, 60, 40, 30);
+				gameFrame.addWindowListener(this);
 			} else {
 				System.out.println("Name entry canceled.");
 			}
@@ -88,7 +89,6 @@ public class MainMenuFrame extends JPanel implements WindowListener, ActionListe
 			
 			System.out.println("High scores.");
 			JFrame highScoreFrame = new JFrame("High scores");
-			
 			
 			GridLayout highScoreFrameLayout = new GridLayout(highScoreCount + 2, 1);
 			highScoreFrameLayout.setVgap(10);
@@ -136,6 +136,7 @@ public class MainMenuFrame extends JPanel implements WindowListener, ActionListe
 	@Override
 	public void windowClosed(WindowEvent e) {
 		this.getTopLevelAncestor().setVisible(true);
+		gameFrame = null;
 	}
 	
 	@Override

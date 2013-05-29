@@ -34,7 +34,8 @@ public class GridMouseListener extends MouseAdapter implements Serializable {
 			Tile sourceTile = (Tile) e.getSource();
 			System.out.print("Pressed " + sourceTile.terrain.getName() + " at " + sourceTile.row + ", " + sourceTile.col + ". ");
 			actor.move(sourceTile);
-			}
-		}
-
+		} else if (!active) {
+			System.out.println(" Mouse listener inactive. Actor not moved.");
+		}	
 	}
+}

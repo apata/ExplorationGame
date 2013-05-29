@@ -23,19 +23,25 @@ public class Program {
 	 * @param args
 	 */
 	public static void main(String[] args) {
+		javax.swing.SwingUtilities.invokeLater(new Runnable() {
+			public void run() {
+				createMainMenu();
+			}
+		});
+	}
+	
+	public static void createMainMenu() {
 		JFrame program = new JFrame("Main menu");
 		program.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		program.setLayout(new BorderLayout(5, 5));
 		
-		MainMenuFrame mainMenuFrame = new MainMenuFrame(new Dimension(300, 60));
+		MainMenuPanel mainMenuFrame = new MainMenuPanel(new Dimension(300, 60));
 		
 		program.getContentPane().add(mainMenuFrame);
 		
 		program.pack();
 		program.setLocationByPlatform(true);
 		program.setVisible(true);
-		
-		
 	}
 
 }

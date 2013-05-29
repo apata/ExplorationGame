@@ -8,13 +8,14 @@ import java.util.Collections;
 public class Highscore implements Serializable, Comparable<Highscore> {
 	private static final long serialVersionUID = 1L;
 	
-	protected Actor actor ;
-	protected int score ;
+	protected Actor actor;
+	protected int score;
 	final static String filepath = "resources\\highscore.dat";
 	public Highscore(Actor actor) {
 		this.actor = actor;
 		this.score = actor.getTurns() * 100;
 	}
+	
 	public void writeToFile() throws IOException {
 		if ((new File(filepath)).exists()) {
 			ArrayList<Highscore> allhs = readAllHighscores();
@@ -65,16 +66,16 @@ public class Highscore implements Serializable, Comparable<Highscore> {
 	
 	@Override
 	public String toString() {
-		return actor.getName() + " : " + score ;
+		return actor.getName() + " : " + score;
 	}
 	
 	@Override
 	public int compareTo(Highscore o) {
 		if (this.score > o.score) {
-			return 1;
+			return -1;
 		}
 		else if (this.score < o.score) {
-			return -1;
+			return 1;
 		}
 		else {
 			return 0;
@@ -83,13 +84,13 @@ public class Highscore implements Serializable, Comparable<Highscore> {
 	public static void deleteHighscores() {
 		try{
     		File file = new File(filepath);
-    		if(file.delete()){
+    		if (file.delete()) {
     			System.out.println(file.getName() + " is deleted!");
-    		}else{
+    		} else {
     			System.out.println("Delete operation failed.");
     		}
     	}
-		catch(Exception e){
+		catch(Exception e) {
     		e.printStackTrace();
     	}
 	}

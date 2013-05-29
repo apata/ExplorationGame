@@ -14,6 +14,10 @@ import javax.swing.ImageIcon;
  *
  */
 
+/**
+ * @author Artur
+ *
+ */
 class Player extends Actor {
 	private static final long serialVersionUID = 1L;
 	
@@ -59,7 +63,23 @@ class Player extends Actor {
 			kill();
 		}
 	}
-		
+	
+	@Override
+	public void setActive(boolean active) {
+		super.setActive(active);
+		if (active) {
+			getGame().gridDispatcher.setActive(true);
+			getGame().gridMouseListener.setActive(true);
+			getGame().gridDispatcher.setActor(this);
+			getGame().gridMouseListener.setActor(this);
+		} else {
+			getGame().gridDispatcher.setActive(false);
+			getGame().gridMouseListener.setActive(false);
+			getGame().gridDispatcher.setActor(null);
+			getGame().gridMouseListener.setActor(null);
+		}
+	}
+	
 	public Player() {
 		impassableTerrain = new ArrayList<>(0);
 		impassableTerrain.add(new ImpassableMountainsTerrain());
@@ -95,7 +115,7 @@ class Player extends Actor {
 
 	
 	/**
-	 * Checks if actor is dead.
+	 * Checks if player is dead.
 	 * 
 	 * @return
 	 */
@@ -111,31 +131,12 @@ class Player extends Actor {
 		}
 	}
 	
-	private void kill() {
-		getGame().gridDispatcher.setActive(false);
-		getGame().gridMouseListener.setActive(false);
-				
-		if (isActive()) {
-			for (ActorStatusListener l : statusListeners) {
-				l.pushText("You have died!\n" +
-						"Close the game window to immortalize your name in the Halls of the Dead.\n");
-			}	
-				
-			try {
-				Player deadPlayer = new Player(getName());
-				deadPlayer.setTurns(getTurns());
-				Highscore hs = new Highscore(deadPlayer);
-				hs.writeToFile();
-			} 
-			catch (IOException e) {
-				System.out.println("Error writing data to file: " + e);
-			}
-		}
 	
-		setActive(false);
-//		getGame().close();
-	}
-	
+	/**
+	 * Checks if player has moves left.
+	 * 
+	 * @return
+	 */
 	public boolean checkTurnEnd() {
 		if (getTurnMoves() <= 0) {
 			return true;
@@ -144,22 +145,18 @@ class Player extends Actor {
 		}
 	}
 	
+	
+	/**
+	 * Checks if player is on wall terrain.
+	 * 
+	 * @return
+	 */
 	public boolean checkVictory() {
 		if (getCurrentTile().getClass().equals(new WallTerrain().getClass())) {
 			return true;
 		} else {
 			return false;
 		}
-	}
-
-		
-	/**
-	 * Invoked in moveActor(). Makes changes to actor values according to Terrain of input Tile.
-	 * 
-	 * @param tile
-	 */
-	public void visitTile(Tile tile) {
-		tile.visited += 1;
 	}
 	
 	/**
@@ -185,17 +182,18 @@ class Player extends Actor {
 		}
 
 		// Enables player input.
-		getGame().gridDispatcher.setActor(this);
-		getGame().gridMouseListener.setActor(this);
-		getGame().gridDispatcher.setActive(true);
-		getGame().gridMouseListener.setActive(true);
+//		getGame().gridDispatcher.setActor(this);
+//		getGame().gridMouseListener.setActor(this);
+//		getGame().gridDispatcher.setActive(true);
+//		getGame().gridMouseListener.setActive(true);
 	}
-			
+	
+	@Override
 	void endTurn() {
 		// Disables player input.
 		setActive(false);
-		getGame().gridDispatcher.setActive(false);
-		getGame().gridMouseListener.setActive(false);
+//		getGame().gridDispatcher.setActive(false);
+//		getGame().gridMouseListener.setActive(false);
 		
 		for (ActorStatusListener l : statusListeners) {
 			l.pushText("Darkness engulfs the primal landscape.\n");
@@ -213,15 +211,27 @@ class Player extends Actor {
 				return false;
 			}
 		}
+		
 		if (tile.terrain.getMoveCost() > getTurnMoves()) {
 			for (ActorStatusListener l : statusListeners) {
 				l.pushText("You push well into the night. The next morning will be harsh!\n");
 			}
 		}
+		
 		return super.checkLegalMove(tile);
 	}
 	
-	
+	@Override
+	boolean move(int row, int col) {
+		try {
+			Tile targetTile = getGame().gameWorld.getTile(row, col);
+			return move(targetTile);
+		} catch (TileOutOfGameWorldException e) {
+			System.out.println("Target tile is out of gameworld. Move not possible.");
+			return false;
+		}
+	}		
+
 	@Override
 	boolean move(Tile targetTile) {		
 		Tile currentTile = getCurrentTile();
@@ -234,6 +244,12 @@ class Player extends Actor {
 			
 			// Informs tile of visit, changes tile border.
 			targetTile = getCurrentTile();
+			
+			if (checkVictory()) {
+				win();
+				return true;
+			}
+
 			targetTile.visited += 1;
 			targetTile.setBorder(BorderFactory.createLineBorder(new Color(150, 0, 0, 255), 2 * targetTile.visited));
 			
@@ -247,20 +263,17 @@ class Player extends Actor {
 			
 			setTurnMoves(getTurnMoves() - targetTile.terrain.getMoveCost());
 
+			// Sets icon of target tile.
+			targetTile.setIcon(icon);
+			getGame().moveView(targetTile);
+			
+			
 			// Passes status change event to listeners.
 			for (ActorStatusListener l : statusListeners) {
 				l.statusUpdated(giveStatus());
 				l.actorAtTile(targetTile);
 			}
-			
-			// Sets icon of target tile.
-			targetTile.setIcon(icon);
-			getGame().moveView(targetTile);
-			
-			if (checkVictory()) {
-				win();
-				return true;
-			}
+						
 			
 			if (checkTurnEnd()) {
 				endTurn();
@@ -273,42 +286,67 @@ class Player extends Actor {
 		}
 	}
 
-	private void win() {
-		getGame().gridDispatcher.setActor(null);
-		getGame().gridMouseListener.setActor(null);
+	private void win() {				
+//		if (isActive()) {
+//			for (ActorStatusListener l : statusListeners) {
+//				l.pushText("You have finally reached the Wall! Congratulations! \n" +
+//						"Close the game window to immortalize your name in the Great Hall.\n");
+//			}	
+//				
+//			try {
+//				Player victoryPlayer = new Player(getName());
+//				victoryPlayer.setTurns(getTurns() + 50);
+//				Highscore hs = new Highscore(victoryPlayer);
+//				hs.writeToFile();
+//			}
+//			catch (IOException e) {
+//				System.out.println("Error writing data to file: " + e);
+//			}
+//		}
+	
+	
+		setActive(false);
+		getGame().gridDispatcher.setActive(false);
+		getGame().gridMouseListener.setActive(false);
+		
+		for (ActorStatusListener l : statusListeners) {
+		l.pushText("You have finally reached the Wall! Congratulations! \n" +
+				"Close the game window to immortalize your name in the Halls.\n");
+		}		
+	
+		try {
+			Player victoryPlayer = new Player(getName());
+			victoryPlayer.setTurns(getTurns() + 50);
+			Highscore hs = new Highscore(victoryPlayer);
+			hs.writeToFile();
+		} catch (IOException e) {
+			System.out.println("Error writing data to file: " + e);
+		}
+	}
+	
+	private void kill() {
+		setActive(false);
 		getGame().gridDispatcher.setActive(false);
 		getGame().gridMouseListener.setActive(false);
 				
-		if (isActive()) {
-			for (ActorStatusListener l : statusListeners) {
-				l.pushText("You have finally reached the Wall! Congratulations! \n" +
-						"Close the game window to immortalize your name in the Great Hall.\n");
-			}	
-				
-			try {
-				Player victoryPlayer = new Player(getName());
-				victoryPlayer.setTurns(getTurns() + 50);
-				Highscore hs = new Highscore(victoryPlayer);
-				hs.writeToFile();
-			} 
-			catch (IOException e) {
-				System.out.println("Error writing data to file: " + e);
-			}
+		for (ActorStatusListener l : statusListeners) {
+			l.pushText("You have died!\n" +
+					"Close the game window to immortalize your name in the Halls of the Dead.\n");
+		}	
+		try {
+			Player deadPlayer = new Player(getName());
+			deadPlayer.setTurns(getTurns());
+			Highscore hs = new Highscore(deadPlayer);
+			hs.writeToFile();
+		} catch (IOException e) {
+			System.out.println("Error writing data to file: " + e);
 		}
+		
 	
-		setActive(false);
+//		getGame().close();
 	}
 
-	@Override
-	boolean move(int row, int col) {
-		try {
-			Tile targetTile = getGame().gameWorld.getTile(row, col);
-			return move(targetTile);
-		} catch (TileOutOfGameWorldException e) {
-			System.out.println("Target tile is out of gameworld. Move not possible.");
-			return false;
-		}
-	}		
+
 	
 	/**
 	 * Places player on TileGrid. Now used for initializing new game 
@@ -337,12 +375,11 @@ class Player extends Actor {
 		
 		Tile currentTile = getCurrentTile();
 		
-		
 		currentTile.visited += 1;
 		currentTile.setBorder(BorderFactory.createLineBorder(new Color(150, 0, 0, 255), 2 * currentTile.visited));
 		currentTile.setIcon(icon);
 		
-		getGame().moveView(currentTile);
+//		getGame().moveView(currentTile);
 	}
 
 }

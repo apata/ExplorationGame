@@ -65,37 +65,37 @@ class TileGrid extends JPanel {
 		for (int row = 0; row < tiles.length; row++) {
 			for (int col = 0; col < tiles[row].length; col++) {
 				Tile tile = null;
+				
 				if (col == 0 || col == tiles[row].length - 1) {
 					tile = new Tile(new OceanTerrain());
-				}
-				else if (row == 0) {
+				} else if (row == 0) {
 					tile = new Tile(new ImpassableMountainsTerrain());
-				}
-				else if (row == tiles.length - 1) {
+				} else if (row == tiles.length - 1) {
 					tile = new Tile(new WallTerrain());
-				}
-
-				else {
+				} else {
 					tile = new Tile(ts.next());
 				}
+				
 				tile.row = row;
 				tile.col = col;
 				tile.visited = 0;
-				String text = tile.getToolTipText();
-				tile.setToolTipText(text + "<br><b>Coordinates: </b>" + row + ", " + col);
-				//tile.addMouseListener(gridMouseListener);
+				
+				tile.setToolTipText(tile.getToolTipText() + "<br><b>Coordinates: </b>" + row + ", " + col);
 				tile.setPreferredSize(tilePrefSize);
 				
-				//add(tile);
 				tiles[row][col] = tile;
+				
+				// Adds tile as node to tile graph.
 				tileGraph.addVertex(tile);
 			}
 		}
 
-		
 		for (Tile[] row : tiles) {
 			for (Tile sourceTile : row) {
+				// Adds tile to JPanel.
 				add(sourceTile);
+				
+				// Creates edges in tile graph.
 				for (int i = -1; i < 2; i++) {
 					for (int j = -1; j < 2; j++) {
 						try {
@@ -119,20 +119,5 @@ class TileGrid extends JPanel {
 		int row = (int) (Math.random() * tiles.length);
 		int col = (int) (Math.random() * tiles[row].length);
 		return tiles[row][col];
-	}
-	
-	
-	/**
-	 * Exits JVM. Called when actor.checkDeath() == true from moveActor(Tile t) function. 
-	 * In future versions hopefully disables Game Window and enables Main Menu again.
-	 * 
-	 */
-	public void exit() {
-		System.out.println("Exiting. ");
-//		((JFrame) this.getTopLevelAncestor()).dispose();
-		System.exit(0);
-		
-//        WindowEvent wev = new WindowEvent((JFrame) this.getTopLevelAncestor(), WindowEvent.WINDOW_CLOSING);
-//        Toolkit.getDefaultToolkit().getSystemEventQueue().postEvent(wev);
 	}
 }

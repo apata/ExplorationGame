@@ -12,11 +12,8 @@ import org.jgrapht.alg.DijkstraShortestPath;
 public class Whitewalker extends Actor implements ActorStatusListener {
 	private static final long serialVersionUID = 1L;
 	
-//	private Tile playerLocation;
 	private Player player;
-	
 	ImageIcon icon;
-	
 	final int maxTurnMoves = 24;
 	
 	public Whitewalker(String name, Player player) {
@@ -43,9 +40,10 @@ public class Whitewalker extends Actor implements ActorStatusListener {
 		}
 		
 		SimpleDirectedWeightedGraph<Tile, DefaultWeightedEdge> tileGraph = getGame().gameWorld.getTileGraph();
-		List<DefaultWeightedEdge> edgeList = DijkstraShortestPath.findPathBetween(tileGraph, getCurrentTile(), player.getCurrentTile());
-		if (edgeList != null) {
-			for (DefaultWeightedEdge edge : edgeList)  {
+		List<DefaultWeightedEdge> shortestPath = DijkstraShortestPath.findPathBetween(tileGraph, getCurrentTile(), player.getCurrentTile());
+		
+		if (shortestPath != null) {
+			for (DefaultWeightedEdge edge : shortestPath)  {
 				System.out.println(tileGraph.getEdgeSource(edge));
 				if (move(tileGraph.getEdgeTarget(edge)) == true) {
 					continue;
@@ -67,15 +65,19 @@ public class Whitewalker extends Actor implements ActorStatusListener {
 	}
 
 	public boolean checkLegalMove(Tile tile) {
+		// Checks if target tile is passable.
 		for (Terrain t : impassableTerrain) {
 			if (t.getClass().equals(tile.terrain.getClass())) {
 				System.out.println("Impassable terrain!\n");
 				return false;
 			}
 		}
-		if (tile.terrain.getMoveCost() > getTurnMoves()) {
+		
+		// Checks if enough moves are left
+		if (tile.terrain.getMoveCost() * 3 > getTurnMoves()) {
 			return false;
 		}
+		
 		return super.checkLegalMove(tile);
 	}
 
@@ -100,6 +102,7 @@ public class Whitewalker extends Actor implements ActorStatusListener {
 			if (targetTile == player.getCurrentTile()) {
 				attack(player);
 				return false;
+				
 			} else {
 				targetTile.setIcon(icon);
 				return true;
