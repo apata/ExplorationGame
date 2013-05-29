@@ -14,11 +14,11 @@ public class TextButton extends JButton {
         setFont(new Font("Arial", Font.BOLD, 26));
         setBorder(null);
         setBorderPainted(false);
-        setContentAreaFilled(false);
+        setContentAreaFilled(true);
 		setForeground(Color.WHITE);
-		setBackground(new Color(77, 77, 77, 255));
+		setBackground(new Color(77, 77, 77, 225));
 		setFocusPainted(false);
 		setRolloverEnabled(false);
-		setOpaque(false);
+		setOpaque(true);
 	}
 }
