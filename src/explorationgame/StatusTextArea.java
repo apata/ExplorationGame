@@ -38,7 +38,7 @@ public class StatusTextArea extends JTextArea implements ActorStatusListener, Tu
 
 	@Override
 	public void newTurn() {
-		append("A new day dawns.\n");
+		append("\nA NEW DAY DAWNS!\n");
 	}
 
 	@Override

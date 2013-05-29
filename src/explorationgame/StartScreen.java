@@ -4,6 +4,12 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+
+import javax.swing.AbstractAction;
+import javax.swing.Action;
+import javax.swing.JComponent;
+import javax.swing.KeyStroke;
 
 public class StartScreen extends OverlayScreen implements ActionListener {
 	private static final long serialVersionUID = 1L;
@@ -16,6 +22,20 @@ public class StartScreen extends OverlayScreen implements ActionListener {
 		startButton = new TextButton("START");
 		startButton.addActionListener(this);
 		startButton.setPreferredSize(new Dimension(400, 50));
+		
+		Action startAction = new AbstractAction("Start") {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				setVisible(false);
+				getGame().start();			
+			}
+		};
+		
+		startButton.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_SPACE, KeyEvent.KEY_RELEASED), "released SPACE");
+		startButton.getActionMap().put("released SPACE", startAction);
+		
 		add(startButton, BorderLayout.SOUTH);
 	}
 	

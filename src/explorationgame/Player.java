@@ -57,7 +57,6 @@ class Player extends Actor {
 	
 	@Override
 	public void setActive(boolean active) {
-		super.setActive(active);
 		if (active) {
 			getGame().gridDispatcher.setActive(true);
 			getGame().gridMouseListener.setActive(true);
@@ -69,6 +68,7 @@ class Player extends Actor {
 			getGame().gridDispatcher.setActor(null);
 			getGame().gridMouseListener.setActor(null);
 		}
+		super.setActive(active);
 	}
 	
 	public Player() {
@@ -81,7 +81,7 @@ class Player extends Actor {
 		setPlayerControlled(true);
 		
 		setTurns(0);
-		icon = new ImageIcon("resources\\spearman.png");
+		icon = new ImageIcon("resources/spearman.png");
 		
 		setRow(-1);
 		setCol(-1);
@@ -187,7 +187,7 @@ class Player extends Actor {
 //		getGame().gridMouseListener.setActive(false);
 		
 		for (ActorStatusListener l : statusListeners) {
-			l.pushText("Darkness engulfs the primal landscape.\n");
+			l.pushText("Darkness engulfs the primal landscape.\n\n");
 		}
 		
 		// Activates next actor turn.
@@ -288,13 +288,14 @@ class Player extends Actor {
 			hs.writeToFile();
 		} catch (IOException e) {
 			System.out.println("Error writing data to file: " + e);
-		}		
+		}
 		
+		setActive(false);
 		getGame().gridDispatcher.disable();
 		getGame().gridMouseListener.disable();
 		
 		getGame().winScreen.setVisible(true);
-		
+				
 //		getGame().gridDispatcher.setActive(false);
 //		getGame().gridMouseListener.setActive(false);
 //		
@@ -314,10 +315,10 @@ class Player extends Actor {
 			System.out.println("Error writing data to file: " + e);
 		}
 		
+		setActive(false);
 		getGame().gridDispatcher.disable();
 		getGame().gridMouseListener.disable();
 
-//		setActive(false);
 //		getGame().gridDispatcher.setActive(false);
 //		getGame().gridMouseListener.setActive(false);			
 		getGame().deathScreen.setVisible(true);

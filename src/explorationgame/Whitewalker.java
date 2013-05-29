@@ -27,7 +27,7 @@ public class Whitewalker extends Actor implements ActorStatusListener {
 		setPlayerControlled(false);
 		setRow(-1);
 		setCol(-1);
-		icon = new ImageIcon("resources\\fallenbrother2.png");
+		icon = new ImageIcon("resources/fallenbrother2.png");
 		this.player = player;
 	}
 
@@ -118,9 +118,8 @@ public class Whitewalker extends Actor implements ActorStatusListener {
 			player.kill();
 		}
 		for (ActorStatusListener l : statusListeners) {
-			l.pushText("Three horns interrupt your fitful sleep. White walkers!\n");
-			l.pushText("Only thanks to the indomitable will of your men " +
-					"you manage to prevail against the ice-cold bastards.\n");
+			l.pushText("\nThree horns interrupt your fitful sleep. WHITE WALKERS!\n");
+			l.pushText("A fierce battle ensues, but you manage to prevail against the ice-cold devils.\n\n");
 		}
 		
 		setLocation(-1, -1);
